@@ -1,30 +1,48 @@
 """
-Task 2: Sum Every Second Integer
+Task 2: Calculate average of even numbers
 Lab: 1
-Title: Sum Every Second Integer
+Title: Even Numbers Average Calculator
 Version: 1.0
-Developer: Chuiko Rygor
-Date: 2025-03-05
+Developer: [Your Name]
+Date: [Current Date]
 """
 
-def sum_every_second_integer():
-    """Sum every second integer entered by the user until the number 1 is entered."""
-    total_sum = 0
-    count = 0
+def calculate_even_average():
+    """
+    Calculate the average of even numbers entered by the user.
+    The loop ends when the number 1 is entered.
+    """
+    even_sum = 0
+    even_count = 0
+    
     while True:
         try:
             num = int(input("Enter an integer (1 to stop): "))
+            
             if num == 1:
                 break
-            if count % 2 == 1:
-                total_sum += num
-            count += 1
+                
+            if num % 2 == 0:  # Check if number is even
+                even_sum += num
+                even_count += 1
+                
         except ValueError:
             print("Invalid input. Please enter an integer.")
-    return total_sum
+    
+    # Calculate average if there were even numbers, otherwise return 0
+    return even_sum / even_count if even_count > 0 else 0
 
 def task2_main():
-    """Main function for Task 2: handles input and displays the result."""
-    print("Enter integers. Enter 1 to stop.")
-    total_sum = sum_every_second_integer()
-    print(f"The sum of every second integer entered is: {total_sum}")
+    """Main function for Task 26: handles input and displays the result."""
+    print("Enter integers. The program will calculate the average of even numbers.")
+    print("Enter 1 to stop.")
+    
+    average = calculate_even_average()
+    
+    if average == 0:
+        print("No even numbers were entered.")
+    else:
+        print(f"The average of even numbers entered is: {average:.2f}")
+
+if __name__ == "__main__":
+    task2_main()

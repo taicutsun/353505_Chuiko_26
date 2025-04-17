@@ -21,6 +21,7 @@ def get_valid_input(prompt: str, type_cast, validation=lambda x: True, error_msg
 
 """Decorator to measure function execution time."""
 def timer_decorator(func):
+    
     def wrapper(*args, **kwargs):
         start_time = time.time()
         result = func(*args, **kwargs)

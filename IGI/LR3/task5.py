@@ -1,50 +1,68 @@
 """
-Task 5: Process List of Integers
+Task 1: List Processing
 Lab: 1
-Title: List Processor
+Title: List Element Analyzer
 Version: 1.0
-Developer: Chuiko Rygor
-Date: 2025-03-05
+Developer: [Your Name]
+Date: [Current Date]
 """
-from initialization import input_list_user, generate_list_random
-from utils import get_valid_input
 
-def display_list(lst: list):
-    """Display the list elements."""
-    print("List elements:", lst)
-
-def compute_min_and_sum(lst: list) -> tuple[int, int]:
+def sum_negatives(lst: list) -> int:
     """
-    Find the minimum absolute value element and sum of positive elements 
-    between the first and last positive elements in the list.
+    Calculate the sum of all negative elements in the list.
     
     Args:
         lst (list): List of integers.
     
     Returns:
-        tuple[int, int]: Minimum absolute value and sum between positive elements.
+        int: Sum of negative elements.
     """
-    # Finding the minimum element by absolute value
-    min_element = min(lst, key=abs)
+    return sum(x for x in lst if x < 0)
+
+def product_between_min_max(lst: list) -> int:
+    """
+    Calculate the product of elements between the maximum and minimum elements.
     
-    # Find the first and last positive elements
-    first_positive = next((i for i, x in enumerate(lst) if x > 0), None)
-    last_positive = next((i for i in reversed(range(len(lst))) if lst[i] > 0), None)
+    Args:
+        lst (list): List of integers.
     
-    sum_between = 0
-    if first_positive is not None and last_positive is not None and first_positive < last_positive:
-        sum_between = sum(x for x in lst[first_positive + 1:last_positive] if x > 0)
+    Returns:
+        int: Product of elements between min and max.
+             Returns 0 if min and max are adjacent or if list is empty.
+    """
+    if not lst:
+        return 0
     
-    return min_element, sum_between
+    min_val = min(lst)
+    max_val = max(lst)
+    min_index = lst.index(min_val)
+    max_index = lst.index(max_val)
+    
+    # Ensure start is before end
+    start, end = sorted([min_index, max_index])
+    
+    # If adjacent or same element, return 0
+    if end - start <= 1:
+        return 0
+    
+    product = 1
+    for num in lst[start+1:end]:
+        product *= num
+    
+    return product
 
 def task5_main():
-    """Main function for Task 5: handles list initialization and processing."""
-    print("Initialize list:")
-    print("1. User input")
-    print("2. Random generator")
-    choice = get_valid_input("Select method (1/2): ", int, lambda x: x in (1, 2))
-    lst = input_list_user() if choice == 1 else generate_list_random()
-    display_list(lst)
-    min_element, sum_between = compute_min_and_sum(lst)
-    print(f"Minimum element by absolute value: {min_element}")
-    print(f"Sum of positive elements between the first and last positive elements: {sum_between}")
+    """Main function for Task 1: handles list processing."""
+    sample_list = [2, -3, 5, -1, 0, 8, -4, 7]
+    print("Sample list:", sample_list)
+    
+    # Calculate sum of negatives
+    negative_sum = sum_negatives(sample_list)
+    print(f"Sum of negative elements: {negative_sum}")
+    
+    # Calculate product between min and max
+    product = product_between_min_max(sample_list)
+    print(f"Product between min and max elements: {product}")
+
+if __name__ == "__main__":
+    task5_main()
