@@ -1,0 +1,37 @@
+This is a sample text for testing the program. It includes various sentences, such as declarative ones, interrogative ones? And even exclamatory ones! 
+
+Here are some prices: 23.78 USD, 100 RUR, 45.67 EU. Invalid examples: 22 UDD, 0.002 USD.
+
+Words containing letters from f to y: fly, gym, happy, yellow, zoo. 
+
+Short words: cat, dog, apple, bat, car. The shortest word ending with 'a' is "banana".
+
+Smileys: :) ;-) :(( :]] ;--[[[ 
+
+This text also has some numbers and symbols: 123, 456, 789. Let's see how the program handles them!
+
+New test cases for specific requirements:
+
+1. Words starting with lowercase consonants:
+   - banana, cat, dog, happy, yellow, zoo, fly, gym
+   - These words start with consonants and are lowercase
+
+2. License plate numbers:
+   - 1234AB is a valid license plate
+   - 5678CD is another valid one
+   - 123AB is invalid (too short)
+   - 12345AB is invalid (too long)
+   - AB1234 is invalid (wrong format)
+
+3. Words with minimum length:
+   - a, I, to, be, or, cat, dog
+   - The shortest words here are "a" and "I"
+
+4. Words followed by commas:
+   - apple, banana, orange, and pear
+   - one, two, three, four
+   - red, blue, green, yellow
+
+5. Words ending with 'y':
+   - happy, yellow, fly, gym, quickly, slowly
+   - The longest word ending with 'y' is "quickly"
