@@ -1,0 +1,9 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/property_type/form.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>{% if object %}Изменить{% else %}Добавить{% endif %} тип недвижимости</h1>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+{% endblock %}

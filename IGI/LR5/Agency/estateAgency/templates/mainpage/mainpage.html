@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Главная - Агентство недвижимости{% endblock %}
+
+{% block content %}
+<body>
+    <div class="content">
+        {% if user.is_authenticated %}
+            <h1>
+                Добро пожаловать, 
+                {% if user.is_superuser %}
+                    Администратор {{ user.username }}!
+                {% elif user.profile.role %}
+                    {{ user.profile.get_role_display }} {{ user.username }}!
+                {% else %}
+                    {{ user.username }}!
+                {% endif %}
+            </h1>
+        {% else %}
+            <h1>Лучшие объекты недвижимости в нашем каталоге</h1>
+        {% endif %}
+
+        <!-- Последние добавленные объекты -->
+        <section class="featured-properties">
+            <h2>Новые предложения</h2>
+            <div class="properties-grid">
+                {% for property in latest_properties %}
+                    <div class="property-card">
+                        <div class="property-info">
+                            <h3>{{ property.title }}</h3>
+                            <p class="price">{{ property.price }} ₽</p>
+                            <p class="status {{ property.status }}">{{ property.get_status_display }}</p>
+                            <p>{{ property.property_type.name }} | {{ property.area }} м²</p>
+                            <a href="{% url 'property_detail' property.pk %}" class="btn">Подробнее</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Статистика компании -->
+        <section class="company-stats">
+            <h2>Наши достижения</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ company_stats.total_deals }}</div>
+                    <div class="stat-label">Совершённых сделок</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ company_stats.active_properties }}</div>
+                    <div class="stat-label">Активных предложений</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Последняя новость -->
+        <section class="latest-news">
+            {% if last_article %}
+                <h2>Последняя новость</h2>
+                <article class="news-article">
+                    <img src="{{ last_article.image.url }}" alt="{{ last_article.title }}" width="400">
+                    <div class="article-content">
+                        <h3>{{ last_article.title }}</h3>
+                        <p class="meta">Опубликовано: {{ last_article.created_at|date:"d.m.Y" }}</p>
+                        <p>{{ last_article.content|truncatewords:30 }}</p>
+                        <a href="{% url 'news_detail' last_article.pk %}" class="read-more">Читать полностью</a>
+                    </div>
+                </article>
+            {% else %}
+                <p class="no-news">Свежих новостей пока нет</p>
+            {% endif %}
+        </section>
+        
+         {% if user.is_authenticated %}
+        <div class="jokes-section">
+            <h2>Шутки дня</h2>
+            <ul>
+                {% for joke in jokes %}
+                    <li>
+                        <p><strong>{{ joke.setup }}</strong></p>
+                        <p>{{ joke.punchline }}</p>
+                        {% if joke.image_url %}
+                            <img src="{{ joke.image_url }}" alt="Joke Image" width="300">
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</body>
+{% endblock %}

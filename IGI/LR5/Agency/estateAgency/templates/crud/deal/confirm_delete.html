@@ -1,0 +1,10 @@
+{# filepath: crud/deal/confirm_delete.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Удалить сделку</h1>
+  <p>Вы уверены, что хотите удалить сделку №{{ object.id }}?</p>
+  <form method="post">{% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'deal_list' %}">Отмена</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,136 @@
+.properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.property-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.status.for_sale { background: #c8e6c9; color: #2e7d32; }
+.status.for_rent { background: #fff3e0; color: #ef6c00; }
+
+.stats-grid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 20px;
+    border: 2px solid #eee;
+    border-radius: 10px;
+}
+
+.stat-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #2196F3;
+}
+
+/* О компании */
+.company-profile {
+    margin-bottom: 40px;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 12px;
+}
+
+.company-title {
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+.company-description {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #555;
+}
+
+/* Команда */
+.employees-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 25px;
+}
+
+.employee-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.employee-card:hover {
+    transform: translateY(-5px);
+}
+
+.profile-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 3px solid #3498db;
+}
+
+.employee-info {
+    padding: 20px;
+}
+
+.employee-name {
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.employee-position {
+    color: #3498db;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.employee-stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 8px 15px;
+    background: #f4f8fb;
+    border-radius: 6px;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.employee-bio {
+    font-size: 0.95em;
+    color: #666;
+    line-height: 1.6;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #95a5a6;
+}

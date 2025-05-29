@@ -1,0 +1,52 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/base.html #}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}Estate Agency{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{% url 'mainpage' %}">Главная</a>
+            <a href="{% url 'about' %}">О нас</a>
+             {% if user.is_authenticated %}
+            <a href="{% url 'property_list' %}">Недвижимость</a>
+            {% else %}
+            <a href="{% url 'property_list_public' %}">Недвижимость</a>
+            {% endif %}
+           <a href="{% url 'propertytype_list_public' %}">Типы недвижимости</a>
+            <a href="{% url 'promo_codes' %}">Промокоды</a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'news_list' %}">Новости</a>
+            <a href="{% url 'contacts' %}">Контакты</a>
+            <a href="{% url 'reviews_list' %}">Отзывы</a>
+            <a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a>
+
+             {% if user.is_superuser %}
+            <a href="{% url 'statistics' %}">Статистика</a>
+            {% endif %}
+           
+                {% if user.profile.role == 'agent' %}
+                    <a href="{% url 'agent_deals' %}">Мои сделки</a>
+                {% elif user.profile.role == 'client' %}
+                    <a href="{% url 'deal_list' %}">Мои сделки</a>
+                {% endif %}
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register_client' %}">Регистрация</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Estate Agency. Все права защищены.</p>
+    </footer>
+</body>
+</html>

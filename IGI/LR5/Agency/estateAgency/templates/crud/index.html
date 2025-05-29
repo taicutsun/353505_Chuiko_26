@@ -1,0 +1,13 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/index.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Админ-панель CRUD</h1>
+  <ul>
+    <li><a href="{% url 'propertytype_list' %}">Типы недвижимости</a></li>
+    <li><a href="{% url 'property_list' %}">Объекты недвижимости</a></li>
+    <li><a href="{% url 'deal_list' %}">Сделки</a></li>
+    <li><a href="{% url 'employee_list' %}">Сотрудники</a></li>
+    <li><a href="{% url 'promocode_list' %}">Промокоды</a></li>
+    <li><a href="{% url 'news_list' %}">Новости</a></li>
+  </ul>
+{% endblock %}

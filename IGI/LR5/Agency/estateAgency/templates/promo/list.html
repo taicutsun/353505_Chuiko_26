@@ -1,0 +1,18 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/promo/list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Активные промокоды</h1>
+  {% if active_promo_codes %}
+    <ul>
+      {% for promo in active_promo_codes %}
+        <li>
+          <strong>{{ promo.code }}</strong> — {{ promo.description }}<br>
+          Для: {{ promo.valid_for }}<br>
+          Действителен до: {{ promo.valid_until|date:"d.m.Y" }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Нет активных промокодов.</p>
+  {% endif %}
+{% endblock %}
