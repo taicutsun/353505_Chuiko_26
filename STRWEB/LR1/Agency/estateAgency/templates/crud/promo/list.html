@@ -1,0 +1,33 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/promo/list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Промокоды</h1>
+  <a href="{% url 'promocode_add' %}">Добавить промокод</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Код</th>
+        <th>Описание</th>
+        <th>Активен</th>
+        <th>Для</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for promocode in object_list %}
+        <tr>
+          <td>{{ promocode.id }}</td>
+          <td>{{ promocode.code }}</td>
+          <td>{{ promocode.description }}</td>
+          <td>{{ promocode.is_active|yesno:"Да,Нет" }}</td>
+          <td>{{ promocode.valid_for }}</td>
+          <td>
+            <a href="{% url 'promocode_edit' promocode.pk %}">Изменить</a>
+            <a href="{% url 'promocode_delete' promocode.pk %}">Удалить</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

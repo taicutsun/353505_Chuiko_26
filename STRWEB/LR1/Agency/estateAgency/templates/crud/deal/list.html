@@ -1,0 +1,35 @@
+{# filepath: crud/deal/list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Сделки</h1>
+  <a href="{% url 'deal_add' %}">Добавить сделку</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Объект</th>
+        <th>Клиент</th>
+        <th>Агент</th>
+        <th>Статус</th>
+        <th>Комиссия</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for deal in deals %}
+        <tr>
+          <td>{{ deal.id }}</td>
+          <td>{{ deal.property }}</td>
+          <td>{{ deal.client }}</td>
+          <td>{{ deal.agent }}</td>
+          <td>{{ deal.get_status_display }}</td>
+          <td>{{ deal.commission }}</td>
+          <td>
+            <a href="{% url 'deal_edit' deal.pk %}">Изменить</a>
+            <a href="{% url 'deal_delete' deal.pk %}">Удалить</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

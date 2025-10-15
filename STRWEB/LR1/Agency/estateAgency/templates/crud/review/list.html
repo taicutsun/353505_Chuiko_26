@@ -1,0 +1,34 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/review/list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Отзывы</h1>
+  <a href="{% url 'review_add' %}">Добавить отзыв</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Клиент</th>
+        <th>Агент</th>
+        <th>Оценка</th>
+        <th>Текст</th>
+        <th>Дата</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for review in object_list %}
+        <tr>
+          <td>{{ review.id }}</td>
+          <td>{{ review.client }}</td>
+          <td>{{ review.agent }}</td>
+          <td>{{ review.rating }}</td>
+          <td>{{ review.text|truncatechars:50 }}</td>
+          <td>{{ review.date|date:"d.m.Y" }}</td>
+          <td>
+            <a href="{% url 'review_delete' review.pk %}">Удалить</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,2 @@
+This is a sample text document for download.
+Файл-пример для демонстрации атрибута download в ссылках.

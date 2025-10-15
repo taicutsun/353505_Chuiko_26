@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ news.title }} - Новости агентства{% endblock %}
+
+{% block content %}
+<body>
+    <div class="content">
+        <article class="news-article">
+            <!-- Заголовок и мета-информация -->
+            <header class="article-header">
+                <h1 class="article-title">{{ news.title }}</h1>
+                <div class="article-meta">
+                    <span class="publish-date">
+                        <i class="far fa-calendar-alt"></i>
+                        {{ news.created_at|date:"d E Y в H:i" }}
+                    </span>
+                </div>
+            </header>
+
+            <!-- Основной контент -->
+            <div class="article-body">
+                {% if news.image %}
+                <figure class="article-image">
+                    <img src="{{ news.image.url }}" 
+                         alt="{{ news.title }}" 
+                         class="featured-image">
+                    <figcaption>Иллюстрация к материалу</figcaption>
+                </figure>
+                {% endif %}
+
+                <div class="article-content">
+                    {{ news.content|linebreaks }}
+                </div>
+            </div>
+
+            <!-- Навигация -->
+            <footer class="article-footer">
+                <a href="{% url 'news_list' %}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Все новости
+                </a>
+            </footer>
+        </article>
+    </div>
+</body>
+{% endblock %}
+
+<style>
+.news-article {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.article-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.article-title {
+    color: #2c3e50;
+    font-size: 2.2em;
+    margin-bottom: 15px;
+}
+
+.article-meta {
+    color: #7f8c8d;
+    font-size: 0.95em;
+    margin-bottom: 30px;
+}
+
+.publish-date i {
+    margin-right: 8px;
+}
+
+.article-image {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.featured-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+}
+
+figcaption {
+    color: #95a5a6;
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.article-content {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #444;
+    margin: 40px 0;
+}
+
+.article-content p {
+    margin-bottom: 1.5em;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 25px;
+    background-color: #3498db;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button i {
+    margin-right: 10px;
+}
+
+.back-button:hover {
+    background-color: #2980b9;
+}
+</style>

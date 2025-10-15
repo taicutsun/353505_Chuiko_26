@@ -1,0 +1,10 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/news/confirm_delete.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Удалить новость</h1>
+  <p>Вы уверены, что хотите удалить новость "{{ object.title }}"?</p>
+  <form method="post">{% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'news_list_admin' %}">Отмена</a>
+  </form>
+{% endblock %}

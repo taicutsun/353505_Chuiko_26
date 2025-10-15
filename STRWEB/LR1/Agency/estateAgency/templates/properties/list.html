@@ -1,0 +1,23 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/properties/list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Список доступных объектов недвижимости</h1>
+  {% if properties %}
+    <div class="properties-grid">
+      {% for property in properties %}
+        <article class="property-card" aria-labelledby="prop-{{ property.pk }}-title">
+          <h2 id="prop-{{ property.pk }}-title">
+            <a href="{% url 'property_detail' property.pk %}">{{ property.title }}</a>
+          </h2>
+          <p class="meta">{{ property.property_type.name }} — {{ property.status|capfirst }}</p>
+          {% if property.price %}<p class="price">Цена: {{ property.price }} ₽</p>{% endif %}
+          <p>
+            <a class="btn" href="{% url 'property_detail' property.pk %}">Подробнее</a>
+          </p>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>Нет доступных объектов недвижимости.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Estate Agency{% endblock %}</title>
+    <meta name="description" content="Агентство недвижимости: покупка, продажа и аренда жилья. Лучшие предложения и профессиональные услуги.">
+    <meta name="keywords" content="недвижимость, квартиры, дома, аренда, покупка, продажа, агентство недвижимости">
+
+    <!-- Favicon -->  
+    <link rel="icon" href="https://www.pngkey.com/png/detail/814-8140002_favicon-for-real-estate.png" type="image/png">
+    <link rel="shortcut icon" href="https://www.pngkey.com/png/detail/814-8140002_favicon-for-real-estate.png" type="image/png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" media="all">
+
+    <!-- JSON-LD structured data-->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Estate Agency",
+      "url": "{{ request.scheme|default:'https' }}://{{ request.get_host|default:'example.com' }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.scheme|default:'https' }}://{{ request.get_host|default:'example.com' }}/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body itemscope itemtype="https://schema.org/Organization">
+    <header role="banner">
+      <nav aria-label="Основная навигация">
+        <ul class="nav nav--horizontal">
+          <li><a href="{% url 'mainpage' %}" title="На главную" accesskey="1">Главная</a></li>
+          <li><a href="{% url 'about' %}">О нас</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'property_list' %}">Недвижимость</a></li>
+          {% else %}
+          <li><a href="{% url 'property_list_public' %}">Недвижимость</a></li>
+          {% endif %}
+          <li><a href="{% url 'propertytype_list_public' %}">Типы недвижимости</a></li>
+          <li><a href="{% url 'promo_codes' %}">Промокоды</a></li>
+          <li><a href="{% url 'cart_view' %}">Корзина</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'news_list' %}">Новости</a></li>
+          <li><a href="{% url 'contacts' %}">Контакты</a></li>
+          <li><a href="{% url 'reviews_list' %}">Отзывы</a></li>
+          <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
+          {% if user.is_superuser %}
+          <li><a href="{% url 'statistics' %}">Статистика</a></li>
+          {% endif %}
+          {% if user.profile.role == 'agent' %}
+          <li><a href="{% url 'agent_deals' %}">Мои сделки</a></li>
+          {% elif user.profile.role == 'client' %}
+          <li><a href="{% url 'deal_list' %}">Мои сделки</a></li>
+          {% endif %}
+          <li><a href="{% url 'logout' %}">Выйти</a></li>
+          {% else %}
+          <li><a href="{% url 'login' %}">Войти</a></li>
+          <li><a href="{% url 'register_client' %}">Регистрация</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" role="main" tabindex="-1" data-page="{% block page_id %}base{% endblock %}">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer role="contentinfo">
+      <p>&copy; <time datetime="2025">2025</time> <span itemprop="name">Estate Agency</span>. Все права защищены.</p>
+      <address>
+        <span itemprop="address">г. Минск, ул. Примерная, 1</span> · 
+        <a href="mailto:info@example.com" itemprop="email">info@example.com</a>
+      </address>
+    </footer>
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>
+
+    <!--
+     Теги для семантической вёрстки
+     Основные: <header>, <nav>, <main>, <section>, <article>, <aside>, <footer>
+    -->

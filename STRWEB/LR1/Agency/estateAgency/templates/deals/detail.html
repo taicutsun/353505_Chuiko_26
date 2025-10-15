@@ -1,0 +1,14 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/deals/detail.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Детали сделки</h1>
+  <ul>
+    <li><strong>Объект:</strong> <a href="{% url 'property_detail' deal.property.pk %}">{{ deal.property.title }}</a></li>
+    <li><strong>Клиент:</strong> {{ deal.client.profile.get_full_name }}</li>
+    <li><strong>Агент:</strong> {{ deal.agent.profile.get_full_name }}</li>
+    <li><strong>Статус:</strong> {{ deal.get_status_display }}</li>
+    <li><strong>Комиссия:</strong> {{ deal.commission }}</li>
+    <li><strong>Дата:</strong> {{ deal.date|date:"d.m.Y" }}</li>
+    <li><strong>Описание:</strong> {{ deal.description }}</li>
+  </ul>
+{% endblock %}
