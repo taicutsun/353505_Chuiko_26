@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Главная — Агентство недвижимости{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/mainpage_animation.css' %}">
+<link rel="stylesheet" href="{% static 'css/mainpage.css' %}">
+{% endblock %}
+
+{% block content %}
+  <nav class="mb-3 position-relative d-none" aria-label="Быстрая навигация по секциям" style="z-index: 100;">
+    <ul class="d-flex justify-content-center gap-3 flex-wrap">
+      <li class="nav-item"><a class="nav-link btn btn-outline-primary btn-sm" href="#top">Вверх</a></li>
+      <li class="nav-item"><a class="nav-link btn btn-outline-primary btn-sm" href="#catalog">Каталог</a></li>
+      <li class="nav-item"><a class="nav-link btn btn-outline-primary btn-sm" href="#downloads">Скачать</a></li>
+    </ul>
+  </nav>
+
+  <header id="top">
+    <!-- Анимированная сцена с ночным небом и домами -->
+    <div class="night-scene">
+      <div class="moon"></div>
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="house house-1">
+        <div class="roof"></div>
+        <div class="for-sale">Продается</div>
+      </div>
+      <div class="house house-2">
+        <div class="roof"></div>
+        <div class="for-sale">Продается</div>
+      </div>
+      <div class="house house-3">
+        <div class="roof"></div>
+        <div class="for-sale">Продается</div>
+      </div>
+      <div class="ground"></div>
+    </div>
+    
+    <!-- Заголовок с задержкой появления -->
+    <h1 class="animated-title">Агентство недвижимости</h1>
+  </header>
+    <!-- Логотип компании -->
+     <div class="logo-container">
+            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=200&h=200&fit=crop&q=80" 
+                 alt="Логотип компании" 
+                 class="company-logo">
+        </div>
+  </header>
+
+  <!-- Краткий каталог товаров -->
+  <section id="catalog" aria-label="Каталог недвижимости" class="mb-4">
+    <h2>Популярные объекты</h2>
+    <ul class="list-group">
+      {% for property in latest_properties %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'property_detail' property.pk %}">{{ property.title }}</a>
+          <span class="badge bg-primary">{{ property.price }} ₽</span>
+        </li>
+      {% empty %}
+        <li class="list-group-item">Нет объектов для отображения.</li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'property_list' %}" class="btn btn-outline-primary mt-2">Весь каталог</a>
+  </section>
+
+  <!-- Скачивания -->
+  <section id="downloads" class="mb-4" aria-label="Файлы для скачивания">
+    <h2>Полезные файлы</h2>
+    <p>
+      <a href="{% static 'docs/price-list.pdf' %}" download class="btn btn-outline-secondary">
+        Скачать прайс-лист (PDF)
+      </a>
+    </p>
+    <p class="small">Файл предназначен для скачивания.</p>
+  </section>
+{% endblock %}

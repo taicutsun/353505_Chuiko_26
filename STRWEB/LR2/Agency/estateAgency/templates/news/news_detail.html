@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ news.title }} - Новости агентства{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <article class="news-article">
+            <!-- Заголовок и мета-информация -->
+            <header class="article-header">
+                <h1 class="article-title">{{ news.title }}</h1>
+                <div class="article-meta">
+                    <span class="publish-date">
+                        <i class="far fa-calendar-alt"></i>
+                        {{ news.created_at|date:"d E Y в H:i" }}
+                    </span>
+                </div>
+            </header>
+
+            <!-- Основной контент -->
+            <div class="article-body">
+                {% if news.image %}
+                <figure class="article-image">
+                    <img src="{{ news.image.url }}" 
+                         alt="{{ news.title }}" 
+                         class="featured-image">
+                    <figcaption>Иллюстрация к материалу</figcaption>
+                </figure>
+                {% endif %}
+
+                <div id="article-column">
+{{ news.content|linebreaks }}
+                </div>
+            </div>
+
+            <!-- Навигация -->
+            <footer class="article-footer">
+                <a href="{% url 'news_list' %}" class="btn btn-outline-secondary back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    Все новости
+                </a>
+            </footer>
+        </article>
+    </div>
+{% endblock %}

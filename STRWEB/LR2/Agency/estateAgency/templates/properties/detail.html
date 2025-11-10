@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ property.title }} | Estate Agency{% endblock %}
+
+{% block content %}
+<div class="property-detail">
+    <div class="property-header">
+        <h1>{{ property.title }}</h1>
+        <div class="property-status {{ property.status }}">
+            {{ property.get_status_display }}
+        </div>
+    </div>
+
+    <div class="property-main">
+        <div class="property-info">
+            <div class="price">{{ property.price }} руб.</div>
+            <form action="{% url 'cart_add' property.pk %}" method="post" aria-label="Добавить в корзину">
+                {% csrf_token %}
+                <label for="qty">Количество:</label>
+                <input id="qty" name="quantity" type="number" min="1" max="99" value="1" />
+                <button type="submit">Добавить в корзину</button>
+                <a class="btn" href="{% url 'cart_view' %}">Перейти в корзину</a>
+            </form>
+            
+            <div class="details">
+                <div class="detail-item">
+                    <span class="label">Площадь:</span>
+                    <span class="value">{{ property.area }} м²</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Комнаты:</span>
+                    <span class="value">{{ property.rooms }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Тип:</span>
+                    <span class="value">{{ property.property_type.name }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="label">Адрес:</span>
+                    <span class="value">{{ property.address }}</span>
+                </div>
+            </div>
+
+            <div class="description">
+                {{ property.description|linebreaks }}
+            </div>
+
+           {% if property.agent %}
+<div class="agent-info">
+    <h3>Агент по недвижимости</h3>
+    <div class="agent-details">
+        <img src="{{ property.agent.profile.photo.url }}" 
+             alt="Agent photo" 
+             class="agent-photo">
+        <div class="agent-contact">
+            <p class="agent-name">{{ property.agent.profile.user.get_full_name }}</p>
+            <p class="agent-phone">{{ property.agent.profile.phone }}</p>
+            <a class="contact-button" href="{% url 'create_deal' %}?property_id={{ property.pk }}">Связаться с агентом</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+        </div>
+
+        {% if reviews %}
+        <div class="agent-reviews">
+            <h3>Отзывы об агенте</h3>
+            {% for review in reviews %}
+            <div class="review">
+                <div class="rating">
+                    {% for i in "12345"|make_list %}
+                    <span class="star {% if forloop.counter <= review.rating %}filled{% endif %}">★</span>
+                    {% endfor %}
+                </div>
+                <p class="review-text">{{ review.text }}</p>
+                <p class="review-author">
+                    {{ review.client.profile.user.get_full_name }}
+                    <span class="review-date">{{ review.created_at|date:"d.m.Y" }}</span>
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if similar_properties %}
+        <div class="similar-properties">
+            <h3>Похожие объекты</h3>
+            <div class="properties-grid">
+                {% for prop in similar_properties %}
+                <div class="property-card">
+                    <h4>{{ prop.title }}</h4>
+                    <p class="price">{{ prop.price }} руб.</p>
+                    <p class="area">{{ prop.area }} м²</p>
+                    <a href="{% url 'property_detail' prop.pk %}" class="view-more">Подробнее</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

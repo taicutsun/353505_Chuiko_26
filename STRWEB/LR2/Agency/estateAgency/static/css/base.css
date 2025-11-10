@@ -1,0 +1,534 @@
+/* Base reset and variables for Estate Agency */
+:root {
+  --color-bg: #0e1a26;
+  --color-surface: #142638;
+  --color-accent: #2dd4bf;
+  --color-accent-2: #a78bfa;
+  --color-text: #dfeaf6;
+  --color-muted: #acd40c;
+  --font-primary: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-secondary: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: radial-gradient(1200px 800px at 10% 10%, #16324a 0%, var(--color-bg) 60%);
+  color: var(--color-text);
+  font-family: var(--font-primary);
+  line-height: 1.6;
+}
+
+/* Typography utilities */
+.container {
+  width: min(1100px, 92%);
+  margin: 0 auto;
+  padding: 1rem 0; /* page breathing room */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+p {
+  margin: 0 0 1rem 0;
+  text-indent: 1.25rem; /* красная строка */
+}
+
+/* Links with states */
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+a:hover { 
+  text-decoration: underline; 
+}
+
+a:visited { 
+  color: #6e7478; 
+}
+
+a:active { 
+  color: #0ea5a4; 
+}
+
+/* Forms: basic validation and accessibility */
+input:required, select:required, textarea:required {
+  border-left: 3px solid var(--color-accent);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-color: var(--color-accent);
+}
+
+input:invalid {
+  border-color: #ef4444;
+}
+
+input:valid {
+  border-color: #10b981;
+}
+
+/* Interactive elements */
+.btn {
+  transition: all 0.3s ease;
+    cursor: pointer; 
+    background: var(--color-accent);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(68, 192, 175, 0.3);
+}
+
+.card {
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.5rem;
+}
+
+/* Unified nav list/link styles (apply to any ul.nav, including secondary navs) */
+ul.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0.5rem 1rem;
+  margin: 0;
+}
+ul.nav li a {
+  color: var(--color-text);
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+}
+ul.nav li a:hover {
+  background: rgba(255,255,255,0.06);
+  text-decoration: none;
+}
+
+/* Header-specific background for the main nav bar */
+header nav ul.nav {
+  background: rgba(20,38,56,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Forms: accessibility states */
+input:required, select:required, textarea:required {
+  outline: 1px dashed #f59e0b;
+}
+input:optional, select:optional, textarea:optional {
+  outline: 1px dashed #64748b;
+}
+input:disabled, select:disabled, textarea:disabled {
+  background: #1f2a37;
+  color: #94a3b8;
+}
+input:out-of-range, select:out-of-range, textarea:out-of-range {
+  border-color: #ef4444;
+}
+input[type="checkbox"]:checked + label, input[type="radio"]:checked + label {
+  color: var(--color-accent);
+}
+
+/* Quotes: language-specific quotation marks */
+q:lang(ru) { 
+  quotes: "|" "|" "|" "|"; 
+}
+q:lang(en) { 
+  quotes: "*" "*" "*" "*"; 
+}
+
+/* Pseudo-elements: first letter and selection */
+.article p::first-letter { 
+  font-size: 2.25rem; 
+  font-weight: 700; 
+  float: left; 
+  margin: 0 0.3rem 0 0; 
+  color: var(--color-accent-2); 
+}
+::selection { 
+  background: rgba(167,139,250,0.35); 
+  color: #fff; 
+}
+
+/* Buttons: cursor change */
+button { 
+  cursor: pointer; 
+  background: var(--color-accent); 
+  color: #0a0f14; 
+  border: 0; 
+  padding: 0.6rem 1rem; 
+  border-radius: 10px; 
+  font-weight: 600; 
+}
+button:hover { 
+  filter: brightness(1.05); 
+}
+button:active { 
+  transform: translateY(1px); 
+}
+
+/* Media queries */
+@media (max-height: 600px) {
+  .site-nav .container { 
+    padding: 0.4rem 0.5rem; 
+  }
+}
+
+/* Tables */
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+th { 
+  text-align: left; 
+}
+th, td { 
+  padding: 0.6rem 0.75rem; 
+  vertical-align: middle; 
+  border: 1px solid rgba(130, 26, 26, 0.12);
+
+}
+tr + tr { 
+  border-top: 1px solid rgba(255,255,255,0.06); 
+}
+caption { 
+  caption-side: top; 
+  text-align: left; 
+  padding: 0.5rem 0; 
+  font-weight: 600; 
+}
+
+/* Bootstrap table overrides for dark theme */
+.table { 
+  color: var(--color-text) !important; 
+  background: var(--color-surface) !important; 
+}
+.table > :not(caption) > * > * { 
+  background: transparent; 
+  color: var(--color-text); 
+  border-color: rgba(255,255,255,0.12); 
+}
+.table-striped > tbody > tr:nth-of-type(odd) > * { 
+  background: rgba(255,255,255,0.03); 
+}
+.table-bordered { 
+  border-color: rgba(255,255,255,0.12); 
+}
+.table thead th { 
+  background: rgba(255,255,255,0.06); 
+}
+
+/* Headings default color for dark theme */
+h1, h2, h3, h4, h5, h6 { 
+  color: var(--color-text); 
+}
+
+.card, .card * {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+.card-body {
+  padding: 1rem;
+}
+.card-footer {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Override card text color for forms only */
+.card .form-control,
+.card .form-label,
+.card input,
+.card select,
+.card textarea {
+  color: #000 !important;
+}
+
+.card .form-control {
+  background: #fff !important;
+}
+
+/* Make news/home images smaller and tidy */
+.card-img-top { 
+  width: 100%; 
+  height: 160px; 
+  object-fit: cover; 
+  display: block; 
+}
+
+/* Buttons */
+.btn-sm { 
+  padding: 0.35rem 0.6rem; 
+  font-size: 0.875rem; 
+}
+.btn-primary { 
+  background: var(--color-accent); 
+  color: #0a0f14; 
+}
+.btn-info { 
+  background: #38bdf8; 
+  color: #0a0f14; 
+}
+.btn-outline-secondary { 
+  background: transparent; 
+  color: var(--color-text); 
+  border: 1px solid rgba(255,255,255,0.35); 
+}
+.btn-outline-danger { 
+  background: transparent; 
+  color: #fca5a5; 
+  border: 1px solid #ef4444; 
+}
+.btn:hover { 
+  filter: brightness(1.06); 
+}
+
+/* List group */
+.list-group { 
+  list-style: none; 
+  margin: 0; 
+  padding: 0; 
+}
+.list-group-item { 
+  background: var(--color-surface) !important; 
+  color: var(--color-text) !important; 
+  border: 1px solid rgba(255,255,255,0.12) !important; 
+  padding: 0.75rem 1rem; 
+}
+.list-group-item + .list-group-item { 
+  margin-top: 0.5rem; 
+}
+
+/* Badges */
+.badge { 
+  display: inline-block; 
+  padding: 0.35em 0.6em; 
+  border-radius: 999px; 
+  font-weight: 700; 
+}
+.bg-primary { 
+  background: rgba(45,212,191,0.15); 
+  color: var(--color-accent); 
+}
+.rounded-pill { 
+  border-radius: 999px; 
+}
+
+/* Pagination horizontal layout */
+.pagination { 
+  list-style: none; 
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+  padding: 0; 
+  margin: 0; 
+}
+.page-item.disabled .page-link { 
+  opacity: 0.5; 
+  pointer-events: none; 
+}
+.page-item.active .page-link { 
+  background: var(--color-accent); 
+  color: #0a0f14; 
+}
+.page-link { 
+  display: inline-block; 
+  padding: 0.45rem 0.75rem; 
+  border-radius: 10px; 
+  background: rgba(255,255,255,0.06); 
+  color: var(--color-text); 
+  text-decoration: none; 
+}
+.page-link:hover { 
+  background: rgba(255,255,255,0.1); 
+}
+
+/* Forms lightweight styling */
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.form-control, .form-select, input.form-control, select.form-control, textarea.form-control {
+  background: #0f1b28;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  min-width: 200px;
+  cursor: text;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.form-control:focus, .form-select:focus, input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
+  border-color: var(--color-accent);
+  outline: 2px solid rgba(45,212,191,0.3);
+  background: #142638;
+  color: #000000;
+}
+
+.form-control.is-invalid, .form-select.is-invalid, input.form-control.is-invalid, select.form-control.is-invalid, textarea.form-control.is-invalid {
+  border-color: #ef4444;
+  color: #000000;
+}
+
+.form-control::placeholder, input.form-control::placeholder, textarea.form-control::placeholder {
+  color: rgba(11, 11, 11, 0.5);
+}
+
+.form-select, select.form-control {
+  cursor: pointer;
+}
+
+/* Form group spacing */
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-2);
+  border-color: var(--color-accent-2);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid rgba(10, 78, 143, 0.35);
+}
+
+.btn-secondary:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* Preloader - Rotating bar loader */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.preloader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loader {
+  width: 100px;
+  height: 100px;
+  border: 4px solid #ccc;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+
+.bar {
+  width: 60px;
+  height: 10px;
+  background: linear-gradient(to right, #00f, #0ff);
+  position: absolute;
+  top: 45px;
+  left: 20px;
+  transform-origin: 50% 50%;
+  animation: rotateBar 1.5s linear infinite;
+}
+
+@keyframes rotateBar {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+th {
+  background: rgba(255,255,255,0.06);
+  font-weight: 600;
+}
+
+tr:hover {
+  background: rgba(45, 212, 191, 0.1);
+}
+
+td:empty {
+  background-color: rgba(255, 255, 255, 0.03);
+  position: relative;
+}
+
+/* Responsive improvements */
+@media (max-width: 1024px) {
+  .container {
+    width: min(900px, 95%);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: min(700px, 90%);
+    padding: 0.5rem 0;
+  }
+
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.5rem; }
+
+  .form-control, .form-select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    min-width: 100%;
+  }
+
+  .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .loader {
+    width: 80px;
+    height: 80px;
+    border-width: 3px;
+  }
+
+  .bar {
+    width: 50px;
+    height: 8px;
+    top: 36px;
+    left: 15px;
+  }
+}

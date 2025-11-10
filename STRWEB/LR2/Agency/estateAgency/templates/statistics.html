@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Статистика агентства{% endblock %}
+
+{% block content %}
+{% if user.is_staff %}
+<div class="container mt-4">
+    <h1 class="mb-4">Статистика агентства недвижимости</h1>
+
+    <!-- Основные показатели -->
+    <div class="mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Всего сделок</h5>
+                    <p class="card-text display-6">{{ total_deals }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Общая комиссия</h5>
+                    <p class="card-text display-6">{{ total_commission|floatformat:0 }}₽</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Средняя цена объекта</h5>
+                    <p class="card-text display-6">{{ avg_price|floatformat:0 }}₽</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Максимальная цена</h5>
+                    <p class="card-text display-6">{{ max_price|floatformat:0 }}₽</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Графики -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Распределение объектов по типам</h5>
+                    <div style="max-width: 500px; max-height: 400px; margin: auto;">
+                        <img src="{{ property_types_chart }}" class="img-fluid" alt="График типов недвижимости" style="width: 100%; height: auto;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Топ агентов -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Топ агентов по комиссии</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Агент</th>
+                            <th>Количество сделок</th>
+                            <th>Общая комиссия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for agent in top_agents %}
+                        <tr>
+                            <td>{{ agent.first_name }} {{ agent.last_name }}</td>
+                            <td>{{ agent.deals_count }}</td>
+                            <td>{{ agent.total_commission|floatformat:0 }}₽</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Статистика клиентов -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Статистика клиентов</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6>Всего клиентов</h6>
+                    <p class="h3">{{ clients_stats.total }}</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Средний бюджет</h6>
+                    <p class="h3">{{ clients_stats.avg_budget|floatformat:0 }}₽</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Активные клиенты</h6>
+                    <p class="h3">{{ clients_stats.active_deals }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Распределение цен -->
+   <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Топ 10 объектов по цене</h5>
+        </div>
+        <div class="card-body">
+            <div style="max-width: 800px; max-height: 400px; margin: auto;">
+                <img src="{{ price_distribution_chart }}" class="img-fluid" alt="График распределения цен" style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </div>
+{% else %}
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Доступ запрещён</h4>
+        <p>У вас нет прав для просмотра этой страницы. Необходимы права администратора.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

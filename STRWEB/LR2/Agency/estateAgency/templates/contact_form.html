@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Форма контакта - Агентство недвижимости{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h1>Форма с валидацией</h1>
+
+        <form action="#" method="get" autocomplete="on" aria-describedby="form-help">
+          <p id="form-help">Поля, отмеченные *, обязательны для заполнения.</p>
+          <fieldset>
+            <legend>Контактные данные</legend>
+            <label for="name">Имя*:</label>
+            <input id="name" name="name" type="text" required minlength="2" maxlength="50" placeholder="Иван" />
+            <label for="email">Email*:</label>
+            <input id="email" name="email" type="email" required placeholder="name@example.com" />
+            <label for="tel">Телефон:</label>
+            <input id="tel" name="tel" type="tel" pattern="^\+?\d{7,15}$" placeholder="+375291234567" />
+          </fieldset>
+          <fieldset>
+            <legend>Параметры объекта</legend>
+            <label for="ptype">Тип недвижимости:</label>
+            <select id="ptype" name="ptype" required>
+              <option value="" disabled selected>Выберите тип</option>
+              <optgroup label="Квартира">
+                <option value="studio">Студия</option>
+                <option value="1">1-комн.</option>
+              </optgroup>
+              <optgroup label="Дом">
+                <option value="house">Коттедж</option>
+              </optgroup>
+            </select>
+            <label for="city">Город:</label>
+            <input list="cities" id="city" name="city" placeholder="Начните ввод..." />
+            <datalist id="cities">
+              <option value="Минск"></option>
+              <option value="Гродно"></option>
+              <option value="Витебск"></option>
+            </datalist>
+          </fieldset>
+          <button type="submit">Отправить</button>
+        </form>
+    </div>
+{% endblock %}

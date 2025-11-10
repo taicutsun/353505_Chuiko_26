@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Новости агентства недвижимости{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <section class="news-section">
+            <h1 class="page-title">Последние новости</h1>
+            
+            {% if news_items %}
+            <div class="news-grid">
+                {% for news in news_items %}
+                <article class="news-card">
+                    <div class="news-image-container">
+                        {% if news.image %}
+                        <img src="{{ news.image.url }}" 
+                             alt="{{ news.title }}" 
+                             class="news-image">
+                        {% else %}
+                        <div class="image-placeholder"></div>
+                        {% endif %}
+                    </div>
+                    <div class="news-content">
+                        <div class="news-meta">
+                            <span class="news-date">{{ news.created_at|date:"d E Y" }}</span>
+                            <span class="news-status">{{ news.get_status_display }}</span>
+                        </div>
+                        <h2 class="news-title">{{ news.title }}</h2>
+                        <p class="news-summary">{{ news.content|striptags|truncatechars:150 }}</p>
+                        <a href="{% url 'news_detail' news.pk %}" class="read-more-btn">Читать далее</a>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-news">
+                <p>Свежих новостей пока нет</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+{% endblock %}

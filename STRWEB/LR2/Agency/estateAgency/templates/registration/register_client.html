@@ -1,0 +1,10 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/registration/register_client.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Регистрация клиента</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зарегистрироваться</button>
+  </form>
+{% endblock %}

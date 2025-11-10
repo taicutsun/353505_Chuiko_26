@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Типы недвижимости{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Типы недвижимости</h1>
+    
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for type in property_types %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ type.name }}</h5>
+                    <p class="card-text">{{ type.description|default:"Описание отсутствует" }}</p>
+                    <ul class="list-unstyled">
+                        <li>Всего объектов: {{ type.total_properties }}</li>
+                        <li>Доступно: {{ type.available_properties }}</li>
+                    </ul>
+                    <a href="{% if user.is_authenticated %}{% url 'property_list' %}{% else %}{% url 'property_list_public' %}{% endif %}?type={{ type.name }}"
+                       class="btn btn-primary">
+                        Смотреть объекты
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

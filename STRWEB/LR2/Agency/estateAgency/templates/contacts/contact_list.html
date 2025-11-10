@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Контакты - {{ office_info.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contacts.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Наши контакты</h1>
+
+    <!-- Office Information -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="h4 mb-3">{{ office_info.name }}</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><i class="fas fa-map-marker-alt me-2"></i> {{ office_info.address }}</p>
+                    <p><i class="fas fa-phone me-2"></i> {{ office_info.phone }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="fas fa-envelope me-2"></i> {{ office_info.email }}</p>
+                    <p><i class="fas fa-clock me-2"></i> {{ office_info.working_hours }}</p>
+                </div>
+            </div>
+            <p class=" mt-2">{{ office_info.description }}</p>
+        </div>
+    </div>
+
+    <!-- Contacts List -->
+    <h2 class="h3 mb-4">Контактные лица</h2>
+    <div class="row">
+        {% for contact in contacts %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                {% if contact.photo %}
+                    <img src="{{ contact.photo.url }}" class="card-img-top contact-photo" alt="{{ contact.get_full_name }}">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop&q=80" class="card-img-top contact-photo" alt="Default photo">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ contact.full_name }}</h5>
+                    <p class=" mb-2">{{ contact.position }}</p>
+                    <hr>
+                    <p class="mb-1"><i class="fas fa-phone me-2"></i> {{ contact.phone }}</p>
+                    <p class="mb-1"><i class="fas fa-envelope me-2"></i> {{ contact.email }}</p>
+                    {% if contact.additional_info %}
+                        <p class="mt-3"><small>{{ contact.additional_info }}</small></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                На данный момент информация о контактах недоступна.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.contact-photo {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}

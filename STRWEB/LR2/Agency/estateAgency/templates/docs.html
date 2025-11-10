@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Документация - Агентство недвижимости{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <h1>HTML семантика и примеры</h1>
+
+        <section id="html-showcase" aria-labelledby="html-showcase-title" data-section="showcase">
+          <h2 id="html-showcase-title">Примеры семантики</h2>
+
+          <article id="text-semantics" data-topic="text" aria-labelledby="text-semantics-title">
+            <h3 id="text-semantics-title">Семантическое выделение текста</h3>
+            <p>
+              Это <strong>важный</strong> и <em>акцентированный</em> текст,
+              <mark>подсвеченный фрагмент</mark>, <small>сноска мелким шрифтом</small>,
+              <del>удалённая часть</del> и <ins>вставленная часть</ins>,
+              формула H<sub>2</sub>O и x<sup>2</sup>.
+            </p>
+            <p>
+              Сокращение: <abbr title="Поисковая оптимизация">SEO</abbr>.
+              Термин <dfn id="term-ux" title="User eXperience">UX</dfn> —
+              <cite>согласно лучшим практикам</cite> — важен для конверсии.
+            </p>
+          </article>
+
+          <section id="lists" aria-labelledby="lists-title">
+            <h3 id="lists-title">Списки</h3>
+            <ul>
+              <li>Пункт A</li>
+              <li>Пункт B</li>
+              <li>Пункт C</li>
+            </ul>
+            <ol>
+              <li>Шаг 1</li>
+              <li>Шаг 2</li>
+              <li>Шаг 3</li>
+            </ol>
+          </section>
+
+          <section id="quotes" aria-labelledby="quotes-title">
+            <h3 id="quotes-title">Цитаты</h3>
+            <p>Короткая цитата: <q cite="https://developer.mozilla.org/ru/">HTML делает веб структурированным.</q></p>
+            <blockquote cite="https://developer.mozilla.org/ru/">
+              «Хорошая разметка улучшает доступность и SEO»
+              <footer>— MDN</footer>
+            </blockquote>
+          </section>
+
+          <section id="table" aria-labelledby="table-title">
+            <h3 id="table-title">Таблица</h3>
+            <table>
+              <caption>Статистика объектов</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Тип</th>
+                  <th scope="col">Количество</th>
+                  <th scope="col">Площадь</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Квартира</th>
+                  <td>10</td>
+                  <td>50 м²</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Вакансии - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Наши вакансии</h1>
+    
+    <div class="vacancy-list">
+        {% for vacancy in vacancies %}
+        <div class="vacancy-item">
+            <h2 class="vacancy-title">{{ vacancy.name }}</h2>
+            {% if vacancy.content %}
+            <div class="vacancy-content">
+                {{ vacancy.content|linebreaks }}
+            </div>
+            {% endif %}
+            <div class="vacancy-meta">
+                <span class="vacancy-date">Добавлено: {{ vacancy.created_at|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p>На данный момент открытых вакансий нет.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/vacancies.css' %}" media="all">
+{% endblock %}

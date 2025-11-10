@@ -1,0 +1,36 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/promo/list.html #}
+{% extends "base.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/promocodes.css' %}" media="all">
+{% endblock %}
+{% block content %}
+  <div class="promocodes-container">
+    <div class="promocodes-section">
+      <h2>Промокоды</h2>
+      <a href="{% url 'promocode_add' %}" class="btn btn-primary mb-3">Добавить промокод</a>
+
+      {% for promocode in object_list %}
+        <div class="promocode-card">
+          <div class="promocode-info">
+            <div class="promocode-code">{{ promocode.code }}</div>
+            <div class="promocode-description">{{ promocode.description }}</div>
+            <div class="promocode-discount">ID: {{ promocode.id }} | Для: {{ promocode.valid_for }}</div>
+          </div>
+          <div class="promocode-status status-{{ promocode.is_active|yesno:'active,expired' }}">
+            {{ promocode.is_active|yesno:"Активен,Неактивен" }}
+          </div>
+          <div class="promocode-actions">
+            <a href="{% url 'promocode_edit' promocode.pk %}" class="btn btn-sm btn-outline-primary me-2">Изменить</a>
+            <a href="{% url 'promocode_delete' promocode.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="promocode-card">
+          <div class="promocode-info">
+            <div class="promocode-description">Нет доступных промокодов</div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

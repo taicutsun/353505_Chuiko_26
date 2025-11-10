@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Отзывы об агентах</h1>
+  {% if reviews %}
+    <ul>
+      {% for review in reviews %}
+        <li>
+          <strong>{{ review.client.profile.get_full_name }}</strong>:
+          <blockquote>{{ review.text }}</blockquote>
+          <em>Оценка: {{ review.rating }}</em><br>
+          <span>Дата: {{ review.created_at|date:"d.m.Y" }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Пока нет отзывов.</p>
+  {% endif %}
+{% endblock %}

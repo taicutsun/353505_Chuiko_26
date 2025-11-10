@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Глоссарий терминов недвижимости{% endblock %}
+
+{% block content %}
+<div class="glossary-container">
+    <h1 class="glossary-title">Глоссарий терминов недвижимости</h1>
+    
+    {% if entries %}
+        <div class="glossary-list">
+            {% for entry in entries %}
+                <article class="glossary-item">
+                    <h3 class="term">{{ entry.term }}</h3>
+                    <q class="definition">{{ entry.definition }}</q>
+                    <div class="metadata">
+                        {% if entry.created_at %}
+                            <span class="created-at">Добавлено: {{ entry.created_at|date:"d.m.Y" }}</span>
+                        {% endif %}
+                        {% if entry.updated_at %}
+                            <span class="updated-at">Обновлено: {{ entry.updated_at|date:"d.m.Y" }}</span>
+                        {% endif %}
+                    </div>
+                </article>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-entries">В глоссарии пока нет терминов.</p>
+    {% endif %}
+</div>
+{% endblock %}

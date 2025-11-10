@@ -1,0 +1,10 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/property_type/confirm_delete.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Удалить тип недвижимости</h1>
+  <p>Вы уверены, что хотите удалить тип "{{ object.name }}"?</p>
+  <form method="post">{% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'propertytype_list' %}">Отмена</a>
+  </form>
+{% endblock %}

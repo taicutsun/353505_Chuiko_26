@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="cart">
+  <h1>Корзина заказа</h1>
+  {% if items %}
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Объект</th>
+          <th>Цена</th>
+          <th>Кол-во</th>
+          <th>Сумма</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <a href="{% url 'property_detail' item.property.pk %}">{{ item.property.title }}</a>
+          </td>
+          <td>{{ item.property.price }} ₽</td>
+          <td>
+            <form action="{% url 'cart_update' item.property.pk %}?action=dec" method="post" style="display:inline-block;">
+              {% csrf_token %}
+              <button type="submit" title="Уменьшить">−</button>
+            </form>
+            <form action="{% url 'cart_update' item.property.pk %}" method="post" style="display:inline-block;">
+              {% csrf_token %}
+              <input type="number" name="quantity" min="1" max="99" value="{{ item.quantity }}" style="width:3rem;" />
+              <button type="submit">OK</button>
+            </form>
+            <form action="{% url 'cart_update' item.property.pk %}?action=inc" method="post" style="display:inline-block;">
+              {% csrf_token %}
+              <button type="submit" title="Увеличить">+</button>
+            </form>
+          </td>
+          <td>{{ item.line_total }} ₽</td>
+          <td>
+            <form action="{% url 'cart_remove' item.property.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit">Удалить</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="3" style="text-align:right;">Итого:</th>
+          <th>{{ total }} ₽</th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="cart-actions">
+      <a class="btn" href="{% url 'property_list_public' %}">Продолжить выбор</a>
+      <a class="btn primary" href="{% url 'checkout' %}">Оплатить</a>
+    </div>
+  {% else %}
+    <p>Корзина пуста.</p>
+  {% endif %}
+</section>
+{% endblock %}
