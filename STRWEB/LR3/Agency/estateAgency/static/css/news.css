@@ -1,0 +1,107 @@
+/* News CSS - News and Articles */
+
+/* ========================================
+   NEWS LIST STYLES
+   ======================================== */
+
+.news-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.page-title {
+    text-align: center;
+    color: var(--color-text);
+    margin-bottom: 50px;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* Enhanced card interactions */
+.news-card {
+    min-width: 300px;
+    background: var(--color-surface);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.news-image {
+max-height: 100px;
+}
+
+.news-summary{
+    max-width: 400px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.news-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-accent);
+}
+
+.read-more-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: var(--color-accent);
+    color: #0a0f14;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.read-more-btn:hover {
+    background: var(--color-accent-2);
+    transform: translateY(-2px);
+}
+
+.no-news {
+    text-align: center;
+    padding: 50px 0;
+}
+
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.back-button i {
+    margin-right: 10px;
+}
+
+#article-column {
+    color: blue;
+    column-count: 2;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .news-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .article-content {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,49 @@
+/* Contacts table styles and small utilities */
+.contacts-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.75rem;
+}
+.contacts-table th,
+.contacts-table td {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  vertical-align: middle;
+}
+.contacts-table thead th {
+  background: rgba(0,0,0,0.03);
+  cursor: pointer;
+  user-select: none;
+}
+.contacts-table tbody tr:hover { background: rgba(0,0,0,0.03); }
+.contacts-photo {
+  width: 64px; height: 64px; object-fit: cover; border-radius: 6px;
+}
+.sort-indicator { margin-left: 6px; font-size: 0.9rem; }
+
+.pagination-controls { display:flex; gap:0.5rem; align-items:center; margin-top: 0.5rem; }
+.pagination-controls button { padding: 0.35rem 0.6rem; }
+
+.details-panel {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.add-form { margin-bottom: 1rem; padding: 0.75rem; border-radius: 8px; background: rgba(255,255,255,0.02); }
+.field-invalid { border: 2px solid #ef4444 !important; background: #ffe6ec !important; }
+
+.reward-result { margin-top: 0.75rem; font-weight: 600; }
+
+@media (max-width: 768px) {
+  .contacts-controls { flex-direction: column; align-items: stretch; }
+}

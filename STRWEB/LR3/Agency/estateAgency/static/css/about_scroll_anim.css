@@ -1,0 +1,161 @@
+/* about_scroll_anim.css */
+
+.scroll-anim-section {
+  padding: 3rem 0;
+  background: linear-gradient(180deg, #f8fafc, #fff);
+}
+
+.scroll-anim-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  overflow: visible;
+}
+
+.houses {
+  position: relative;
+  height: 220px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.house {
+  width: 140px;
+  height: 140px;
+  position: relative;
+  transform-origin: center bottom;
+  /* Remove transition to prevent delays and ensure sync */
+  will-change: transform;
+}
+
+.house .roof {
+  width: 0;
+  height: 0;
+  border-left: 70px solid transparent;
+  border-right: 70px solid transparent;
+  border-bottom: 40px solid #b33;
+  position: absolute;
+  top: -30px;
+  left: 0;
+}
+
+.house .body {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #ffd89b, #ffb86b);
+  border-radius: 6px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.house .door {
+  width: 30px;
+  height: 45px;
+  background: #6b3a2a;
+  position: absolute;
+  left: calc(50% - 15px);
+  bottom: 12px;
+  border-radius: 3px;
+}
+
+.house-left {
+  z-index: 10;
+}
+
+.house-center {
+  transform: translateY(0);
+  z-index: 20;
+}
+
+.house-right {
+  z-index: 10;
+}
+
+.magnifier {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  width: 110px;
+  height: 110px;
+  pointer-events: none;
+  /* Remove transition to prevent delays and ensure sync with houses */
+  transform: translateX(-50%) scale(0.6);
+  transform-origin: center center;
+  will-change: transform, opacity;
+  z-index: 9999;
+  opacity: 0.25;
+}
+
+.magnifier .glass {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 8px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12) inset;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(3px) saturate(120%);
+  mix-blend-mode: normal;
+}
+
+.magnifier .handle {
+  position: absolute;
+  width: 16px;
+  height: 70px;
+  background: #333;
+  left: 7%;
+  top: 86%;
+  transform: translate(-50%, -50%) rotate(30deg);
+  border-radius: 8px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* Make sure handle visually connects to glass by adding a small overlap circle */
+.magnifier .handle::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: -8px;
+  width: 22px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) inset;
+}
+
+/* Slight inner highlight on glass rim to mask seam */
+.magnifier .glass::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  right: 6px;
+  bottom: 6px;
+  border-radius: 50%;
+  box-shadow: inset 0 10px 30px rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+.magnifier .handle { position: absolute; width: 14px; height: 60px; background: #333; right: -28px; bottom: 10px; transform: rotate(30deg); border-radius: 6px; }
+
+/* responsive */
+@media (max-width: 700px) {
+  .houses { gap: 1rem; height: 160px; }
+  .house { width: 90px; height: 90px; }
+  .magnifier { width: 70px; height: 70px; top: 30px; }
+  .scroll-anim-text { position: static; margin-top: 1rem; width: auto; }
+}
+
+/* small visual hint for animation */
+.house::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -8px;
+  width: 80%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.06);
+  transform: translateX(-50%);
+  border-radius: 4px;
+}

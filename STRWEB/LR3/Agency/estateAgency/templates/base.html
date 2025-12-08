@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Estate Agency{% endblock %}</title>
+    <meta name="description" content="Агентство недвижимости: покупка, продажа и аренда жилья. Лучшие предложения и профессиональные услуги.">
+    <meta name="keywords" content="недвижимость, квартиры, дома, аренда, покупка, продажа, агентство недвижимости">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" media="all">
+    {% block extra_css %}{% endblock %}
+
+    <!-- JSON-LD structured data-->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Estate Agency",
+      "url": "{{ request.scheme|default:'https' }}://{{ request.get_host|default:'example.com' }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.scheme|default:'https' }}://{{ request.get_host|default:'example.com' }}/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body itemscope itemtype="https://schema.org/Organization">
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="loader">
+        <div class="bar"></div>
+      </div>
+    </div>
+    <header role="banner">
+      <nav class="site-nav" aria-label="Основная навигация">
+        <ul class="nav nav--horizontal">
+          <li><a href="{% url 'mainpage' %}" title="На главную" accesskey="1">Главная</a></li>
+          <li><a href="{% url 'about' %}">О нас</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'property_list' %}">Недвижимость</a></li>
+          {% else %}
+          <li><a href="{% url 'property_list_public' %}">Недвижимость</a></li>
+          {% endif %}
+          <li><a href="{% url 'propertytype_list_public' %}">Типы недвижимости</a></li>
+          <li><a href="{% url 'promo_codes' %}">Промокоды</a></li>
+          <li><a href="{% url 'cart_view' %}">Корзина</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'news_list' %}">Новости</a></li>
+          <li><a href="{% url 'contacts' %}">Контакты</a></li>
+          <li><a href="{% url 'reviews_list' %}">Отзывы</a></li>
+          <li><a href="{% url 'vacancy_list' %}">Вакансии</a></li>
+          <li><a href="{% url 'privacy_policy' %}">Политика конфиденциальности</a></li>
+          {% if user.is_superuser %}
+          <li><a href="{% url 'statistics' %}">Статистика</a></li>
+          {% endif %}
+          {% if user.profile.role == 'agent' %}
+          <li><a href="{% url 'agent_deals' %}">Мои сделки</a></li>
+          {% elif user.profile.role == 'client' %}
+          <li><a href="{% url 'deal_list' %}">Мои сделки</a></li>
+          {% endif %}
+          <li><a href="{% url 'logout' %}">Выйти</a></li>
+          {% else %}
+          <li><a href="{% url 'login' %}">Войти</a></li>
+          <li><a href="{% url 'register_client' %}">Регистрация</a></li>
+          {% endif %}
+          <li>
+            <button id="theme-toggle" class="theme-toggle" title="Toggle color theme" aria-pressed="false">🌙</button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main" role="main" tabindex="-1" data-page="{% block page_id %}base{% endblock %}">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer role="contentinfo">
+      <p>&copy; <time datetime="2025">2025</time> <span itemprop="name">Estate Agency</span>. Все права защищены.</p>
+      <address>
+        <span itemprop="address">г. Минск, ул. Примерная, 1</span> · 
+        <a href="mailto:info@example.com" itemprop="email">info@example.com</a>
+      </address>
+    </footer>
+
+    {% block extra_scripts %}
+    <script>
+      function hidePreloader() {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+          preloader.classList.add('hidden');
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(hidePreloader, 300);
+        });
+      } else {
+        setTimeout(hidePreloader, 300);
+      }
+
+      window.addEventListener('load', function() {
+        setTimeout(hidePreloader, 500);
+      });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Theme toggle: persist in localStorage and apply on load
+      (function() {
+        const toggle = document.getElementById('theme-toggle');
+        if (!toggle) return;
+
+        const applyTheme = (theme) => {
+          document.documentElement.setAttribute('data-theme', theme);
+          const isLight = theme === 'light';
+          toggle.setAttribute('aria-pressed', String(isLight));
+          toggle.textContent = isLight ? '☀️' : '🌙';
+        };
+
+        // Determine initial theme: saved -> prefers-color-scheme -> dark default
+        const saved = localStorage.getItem('theme');
+        const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        let current = saved || (prefersLight ? 'light' : 'dark');
+        applyTheme(current);
+
+        toggle.addEventListener('click', function() {
+          current = current === 'light' ? 'dark' : 'light';
+          localStorage.setItem('theme', current);
+          applyTheme(current);
+        });
+      })();
+    </script>
+    {% endblock %}
+  </body>
+</html>
+
+    <!--
+     Теги для семантической вёрстки
+     Основные: <header>, <nav>, <main>, <section>, <article>, <aside>, <footer>
+    -->

@@ -1,0 +1,18 @@
+/* Styles for cart dynamic radio generator */
+/* Cart generator root */
+#cart-customizer-root { margin-top: 2rem; padding: 0.75rem; border-top: 1px dashed rgba(255,255,255,0.06); }
+#cart-customizer-root .cd-controls { display:flex; gap:0.5rem; align-items:center; }
+
+/* Always show panel (safer for visibility); visually hide by default if desired */
+#cart-customizer-root .cd-panel { display:block; margin-top:0.75rem; }
+.cd-panel { margin-top:0.75rem; }
+
+/* Radio blocks: use visible styles suitable for dark and light themes */
+.cd-radio-block { display:flex; gap:0.75rem; align-items:center; padding:0.6rem; border-radius:6px; margin-bottom:0.5rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); color: var(--color-text, #fff); }
+.cd-radio-block .cd-preview { min-width:180px; }
+.cd-radio-block input[type="radio"] { transform: scale(1.05); margin-right:0.6rem; }
+.cd-controls label { margin-right:0.5rem; font-size:0.9rem; color: var(--color-text, #fff); }
+.cd-controls input[type="text"] { width:7.5rem; padding:0.15rem 0.35rem; background: rgba(0,0,0,0.12); border:1px solid rgba(255,255,255,0.04); color:var(--color-text, #fff); border-radius:4px; }
+.cd-controls .btn { margin-left:0.5rem; }
+
+@media (max-width:600px){ .cd-controls { flex-direction:column; align-items:flex-start; } .cd-preview{min-width:120px;} }

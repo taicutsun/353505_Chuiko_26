@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Оплата{% endblock %}
+
+{% block content %}
+<section class="checkout">
+  <h1>Страница оплаты</h1>
+  {% if success %}
+    <p>Оплата успешно проведена. Спасибо за заказ!</p>
+    <p><a href="{% url 'property_list_public' %}">Вернуться к списку объектов</a></p>
+  {% else %}
+    {% if items %}
+      <h2>Ваш заказ</h2>
+      <ul>
+        {% for item in items %}
+          <li>{{ item.property.title }} — {{ item.quantity }} шт. — {{ item.line_total }} ₽</li>
+        {% endfor %}
+      </ul>
+      <p><strong>Итого к оплате: {{ total }} ₽</strong></p>
+      <form action="" method="post">
+        {% csrf_token %}
+        <fieldset>
+          <legend>Платёжные данные (демо)</legend>
+          <label for="card">Номер карты:</label>
+          <input id="card" name="card" type="text" placeholder="0000 0000 0000 0000" required minlength="12" maxlength="19" />
+          <label for="exp">Срок действия:</label>
+          <input id="exp" name="exp" type="text" placeholder="MM/YY" required pattern="^(0[1-9]|1[0-2])\/\d{2}$" />
+          <label for="cvc">CVC:</label>
+          <input id="cvc" name="cvc" type="password" required minlength="3" maxlength="4" />
+        </fieldset>
+        <div class="checkout-actions">
+          <a class="btn" href="{% url 'cart_view' %}">Назад в корзину</a>
+          <button class="btn primary" type="submit">Оплатить</button>
+        </div>
+      </form>
+    {% else %}
+      <p>Ваша корзина пуста.</p>
+      <p><a href="{% url 'property_list_public' %}">Вернуться к списку объектов</a></p>
+    {% endif %}
+  {% endif %}
+</section>
+{% endblock %}

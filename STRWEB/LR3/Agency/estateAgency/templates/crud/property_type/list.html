@@ -1,0 +1,29 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/crud/property_type/list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Типы недвижимости</h1>
+  <a href="{% url 'propertytype_add' %}">Добавить тип</a>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Описание</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for type in types %}
+        <tr>
+          <td>{{ type.id }}</td>
+          <td>{{ type.name }}</td>
+          <td>{{ type.description }}</td>
+          <td>
+            <a href="{% url 'propertytype_edit' type.pk %}">Изменить</a>
+            <a href="{% url 'propertytype_delete' type.pk %}">Удалить</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Контакты - {{ office_info.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contacts.css' %}" media="all">
+<link rel="stylesheet" href="{% static 'css/contacts_table.css' %}" media="all">
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script src="{% static 'js/contacts_table.js' %}"></script>
+<script src="{% static 'js/contacts_init.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Наши контакты</h1>
+
+    <!-- Office Information -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="h4 mb-3">{{ office_info.name }}</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><i class="fas fa-map-marker-alt me-2"></i> {{ office_info.address }}</p>
+                    <p><i class="fas fa-phone me-2"></i> {{ office_info.phone }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><i class="fas fa-envelope me-2"></i> {{ office_info.email }}</p>
+                    <p><i class="fas fa-clock me-2"></i> {{ office_info.working_hours }}</p>
+                </div>
+            </div>
+            <p class=" mt-2">{{ office_info.description }}</p>
+        </div>
+    </div>
+
+    <!-- Contacts Table UI -->
+    <h2 class="h3 mb-4">Контактные лица</h2>
+    <div class="contacts-controls">
+        <button id="contacts-add-btn" class="btn btn-sm btn-primary">Add</button>
+        <div class="ms-auto d-flex align-items-center">
+            <input id="contacts-filter-input" class="form-control me-2" placeholder="Filter by text...">
+            <button id="contacts-filter-btn" class="btn btn-sm btn-outline-secondary">Find</button>
+            <button id="contacts-reward-btn" class="btn btn-sm btn-info ms-2">Reward</button>
+        </div>
+    </div>
+
+    <div id="contacts-add-form" class="add-form d-none">
+        <div class="row g-2">
+            <div class="col-md-4"><input id="add-full_name" class="form-control" placeholder="Full name"></div>
+            <div class="col-md-4"><input id="add-photo" class="form-control" placeholder="Photo URL (http... .php|.html)"></div>
+            <div class="col-md-4"><input id="add-phone" class="form-control" placeholder="Phone"></div>
+            <div class="col-md-4 mt-2"><input id="add-email" class="form-control" placeholder="Email"></div>
+            <div class="col-12 mt-2"><textarea id="add-description" class="form-control" rows="2" placeholder="Description"></textarea></div>
+            <div class="col-12 mt-2">
+                <small id="add-url-result"></small>
+                <small id="add-phone-result" class="ms-3"></small>
+            </div>
+            <div class="col-12 mt-2"><button id="add-submit" class="btn btn-sm btn-primary" disabled>Add to Table</button></div>
+        </div>
+    </div>
+
+    <table class="contacts-table">
+        <thead>
+            <tr>
+                <th style="width:40px">Select</th>
+                <th>Photo</th>
+                <th data-key="full_name">Full name <span class="sort-indicator"></span></th>
+                <th data-key="position">Position <span class="sort-indicator"></span></th>
+                <th data-key="phone">Phone <span class="sort-indicator"></span></th>
+                <th data-key="email">Email <span class="sort-indicator"></span></th>
+            </tr>
+        </thead>
+        <tbody id="contacts-table-body"></tbody>
+    </table>
+
+    <div id="contacts-pager" class="pagination-controls"></div>
+
+    <div id="contacts-details" class="details-panel">Click a row to see details here.</div>
+    <div id="contacts-reward-result" class="reward-result"></div>
+
+        <!-- Embed server data as hidden DOM elements (avoids template tags inside JS) -->
+        <div id="contacts-data" style="display:none">
+        {% for contact in contacts %}
+            <div class="contact-data"
+                     data-full_name="{{ contact.name|escape }}"
+                     data-photo="{% if contact.photo %}{{ contact.photo.url|escape }}{% else %}{% endif %}"
+                     data-position="{{ contact.role|default:''|escape }}"
+                     data-phone="{{ contact.phone|default:''|escape }}"
+                     data-email="{{ contact.email|default:''|escape }}"
+                     data-description="{{ contact.description|default:''|escape }}"></div>
+        {% empty %}
+        <!-- no contacts available -->
+        {% endfor %}
+        </div>
+</div>
+
+<style>
+.contact-photo {
+    height: 250px;
+    object-fit: cover;
+}
+
+.card {
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}

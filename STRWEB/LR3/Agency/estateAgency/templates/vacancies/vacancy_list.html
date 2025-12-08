@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Вакансии - {{ block.super }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Наши вакансии</h1>
+    
+    <div class="vacancy-list">
+        {% for vacancy in vacancies %}
+        <div class="vacancy-item">
+            <h2 class="vacancy-title">{{ vacancy.name }}</h2>
+            {% if vacancy.content %}
+            <div class="vacancy-content">
+                {{ vacancy.content|linebreaks }}
+            </div>
+            {% endif %}
+            <div class="vacancy-meta">
+                <span class="vacancy-date">Добавлено: {{ vacancy.created_at|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p>На данный момент открытых вакансий нет.</p>
+        {% endfor %}
+    </div>
+    <!-- Front-end only: DOB validation widget -->
+    <div id="vacancy-dob-widget" aria-labelledby="vacancy-dob-title">
+      <h3 id="vacancy-dob-title">Проверка возраста (client-side)</h3>
+      <label for="dob-input">Дата рождения</label>
+      <input id="dob-input" type="date" aria-describedby="dob-hint">
+      <button id="dob-check" type="button">Проверить</button>
+      <div id="dob-result" role="status" aria-live="polite"></div>
+      <div id="dob-hint" class="sr-only">Введите вашу дату рождения в формате год-месяц-день.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+{{ block.super }}
+<script src="{% static 'js/vacancies_dob.js' %}"></script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/vacancies.css' %}" media="all">
+<link rel="stylesheet" href="{% static 'css/vacancies_dob.css' %}" media="all">
+{% endblock %}
+
+

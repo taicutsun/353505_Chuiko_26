@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}О компании - Агентство недвижимости{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}" media="all">
+<link rel="stylesheet" href="{% static 'css/about_scroll_anim.css' %}" media="all">
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+
+        <!-- Информация о компании -->
+        <section class="company-profile">
+            <h1 class="company-title">{{ company_info.title }}</h1>
+            <div class="company-description">
+                <p>Мы — ведущее агентство недвижимости с многолетним опытом работы на рынке. Наша миссия — помогать людям находить дома их мечты и успешно инвестировать в недвижимость.</p>
+            </div>
+        </section>
+
+        <!-- Сертификат компании -->
+        <section class="certificate-section">
+            <div class="certificate-container">
+                <h2 class="certificate-title">Сертификат качества</h2>
+                <p class="certificate-number">№ 2024-EST-12345</p>
+                <p class="certificate-text">Настоящий сертификат подтверждает, что агентство недвижимости соответствует всем стандартам качества обслуживания и профессионализма в сфере операций с недвижимостью.</p>
+                <p class="certificate-date">Выдан: 15 января 2024 года</p>
+                <p class="certificate-validity">Действителен до: 15 января 2027 года</p>
+            </div>
+
+                 <!-- Scroll animation: houses moving apart and magnifier moving over them -->
+                 <section class="scroll-anim-section" aria-label="Scroll animation">
+                    <div class="scroll-anim-container" id="scroll-anim">
+                        <div class="houses">
+                            <div class="house house-left" aria-hidden="true">
+                                <div class="roof"></div>
+                                <div class="body"></div>
+                                <div class="door"></div>
+                            </div>
+                            <div class="house house-center" aria-hidden="true">
+                                <div class="roof"></div>
+                                <div class="body"></div>
+                                <div class="door"></div>
+                            </div>
+                            <div class="house house-right" aria-hidden="true">
+                                <div class="roof"></div>
+                                <div class="body"></div>
+                                <div class="door"></div>
+                            </div>
+                        </div>
+
+                        <div class="magnifier" id="magnifier" aria-hidden="true">
+                            <div class="glass"></div>
+                            <div class="handle"></div>
+                        </div>
+
+                    </div>
+                </section>
+        </section>
+
+        <!-- История компании по годам -->
+        <section class="history-section">
+            <h2 class="section-title">История развития</h2>
+            <ul class="history-timeline">
+                <li class="history-item">
+                    <span class="history-year">2015</span>
+                    <span class="history-event">Основание компании. Первый офис в центре города.</span>
+                </li>
+                <li class="history-item">
+                    <span class="history-year">2017</span>
+                    <span class="history-event">Расширение штата. Открытие второго офиса.</span>
+                </li>
+                <li class="history-item">
+                    <span class="history-year">2019</span>
+                    <span class="history-event">Достижение отметки в 1000 успешных сделок.</span>
+                </li>
+                <li class="history-item">
+                    <span class="history-year">2021</span>
+                    <span class="history-event">Запуск онлайн-платформы для клиентов.</span>
+                </li>
+                <li class="history-item">
+                    <span class="history-year">2023</span>
+                    <span class="history-event">Получение сертификата качества. Партнерство с крупными застройщиками.</span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Реквизиты компании -->
+        <section class="requisites-section">
+            <h2 class="section-title">Реквизиты компании</h2>
+            <div class="requisites-container">
+                <p class="requisite-item"><strong>Полное наименование:</strong> ООО <q>afgfdsgfdsgsdf</q></p>
+                <p class="requisite-item"><strong>ИНН:</strong> 1234567890</p>
+                <p class="requisite-item"><strong>КПП:</strong> 123456789</p>
+                <p class="requisite-item"><strong>ОГРН:</strong> 1234567890123</p>
+                <p class="requisite-item"><strong>Юридический адрес:</strong> г. Минск, ул. Примерная, д. 1</p>
+                <p class="requisite-item"><strong>Банк:</strong> АО <q>sdfgsdfgdsf</q></p>
+                <p class="requisite-item"><strong>Расчетный счет:</strong> 12345678901234567890</p>
+            </div>
+        </section>
+
+        <!-- Медиа раздел -->
+        <section class="media-section">
+            <h2 class="section-title">Наши презентации</h2>
+            
+            <div class="media-grid">
+                <div class="media-item">
+                    <h3>Видео о компании</h3>
+                    <video controls class="media-video">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                </div>
+                
+                <div class="media-item">
+                    <h3>Аудио-интервью с директором</h3>
+                    <audio controls class="media-audio">
+                        <source src="https://www.w3schools.com/html/horse.mp3" type="audio/mpeg">
+                        Ваш браузер не поддерживает аудио.
+                    </audio>
+                </div>
+            </div>
+        </section>
+
+        <ul class="testMarker">
+        <li> test  </li>
+        <li> test  </li>
+        <li> test  </li>
+        <li> test  </li>
+        </ul>
+        
+        <div>
+            <p style="column-count: 2;"> test pngojsdfpsnpdf opojnbfnodfsno test pngojsdfpsnpdf opojnbfnodfsno[]test pngojsdfpsnpdf opojnbfnodfsno[]test pngojsdfpsnpdf opojnbfnodfsno[]  </p>
+        </div>
+
+        <!-- Команда сотрудников -->
+        <section class="team-section">
+            <h2 class="section-title">Наши специалисты</h2>
+            
+            {% if employees %}
+            <div class="employees-grid">
+                {% for employee in employees %}
+                <div class="employee-card">
+                    {% with p=employee.profile %}
+                    <div class="employee-photo">
+                        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&q=80" 
+                             alt="Портрет сотрудника"
+                             class="profile-image">
+                    </div>
+                    <div class="employee-info">
+                        <h3 class="employee-name">
+                            {% if p and p.user %}
+                                {{ p.user.get_full_name }}
+                            {% else %}
+                                {{ employee }}
+                            {% endif %}
+                        </h3>
+                        <p class="employee-position">{{ employee.position }}</p>
+                    </div>
+                    {% endwith %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-data">
+                <p>Информация о команде обновляется</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+    <script src="{% static 'js/about_scroll_anim.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<section class="cart">
+  <h1>Корзина заказа</h1>
+  {% if items %}
+    <table class="cart-table">
+      <thead>
+        <tr>
+          <th>Объект</th>
+          <th>Цена</th>
+          <th>Кол-во</th>
+          <th>Сумма</th>
+          <th>Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>
+            <a href="{% url 'property_detail' item.property.pk %}">{{ item.property.title }}</a>
+          </td>
+          <td>{{ item.property.price }} ₽</td>
+          <td>
+            <form action="{% url 'cart_update' item.property.pk %}?action=dec" method="post" style="display:inline-block;">
+              {% csrf_token %}
+              <button type="submit" title="Уменьшить">−</button>
+            </form>
+            <form action="{% url 'cart_update' item.property.pk %}" method="post" style="display:inline-block;">
+              {% csrf_token %}
+              <input type="number" name="quantity" min="1" max="99" value="{{ item.quantity }}" style="width:3rem;" />
+              <button type="submit">OK</button>
+            </form>
+            <form action="{% url 'cart_update' item.property.pk %}?action=inc" method="post" style="display:inline-block;">
+              {% csrf_token %}
+              <button type="submit" title="Увеличить">+</button>
+            </form>
+          </td>
+          <td>{{ item.line_total }} ₽</td>
+          <td>
+            <form action="{% url 'cart_remove' item.property.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit">Удалить</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="3" style="text-align:right;">Итого:</th>
+          <th>{{ total }} ₽</th>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="cart-actions">
+      <a class="btn" href="{% url 'property_list_public' %}">Продолжить выбор</a>
+      <a class="btn primary" href="{% url 'checkout' %}">Оплатить</a>
+    </div>
+  {% else %}
+    <p>Корзина пуста.</p>
+  {% endif %}
+  <!-- Web API examples: geolocation, speech synthesis, battery, etc. -->
+  <section id="webapi-examples" class="webapi-examples">
+    <h2>Web API Demo (Geolocation · Speech · Battery)</h2>
+    <p>Ниже — небольшие демонстрации браузерных API. Они работают в безопасном (https/local) контексте and may prompt permissions.</p>
+
+    <div class="webapi-row">
+      <div class="webapi-block">
+        <h4>Geolocation</h4>
+        <button id="geo-get" type="button">Получить координаты</button>
+        <div id="geo-result">—</div>
+      </div>
+
+      <div class="webapi-block">
+        <h4>Speech Synthesis</h4>
+        <input id="speak-text" placeholder="Текст для озвучивания" value="Привет из демо API" />
+        <button id="speak-btn" type="button">Озвучить</button>
+        <div id="speak-result">—</div>
+      </div>
+
+      <div class="webapi-block">
+        <h4>Battery Status</h4>
+        <button id="battery-get" type="button">Показать состояние батареи</button>
+        <div id="battery-result">—</div>
+      </div>
+    </div>
+
+    <div class="webapi-row">
+      <div class="webapi-block">
+        <h4>Network Info</h4>
+        <button id="net-get" type="button">Показать сеть</button>
+        <div id="net-result">—</div>
+      </div>
+
+      <div class="webapi-block">
+        <h4>Clipboard (copy)</h4>
+        <input id="clip-text" value="Текст для копирования" />
+        <button id="clip-copy" type="button">Копировать</button>
+        <div id="clip-result">—</div>
+      </div>
+    </div>
+  </section>
+
+  <script src="{% static 'js/webapi_examples.js' %}"></script>
+
+  <!-- Vitebsk residents: add persons, run two implementations (prototypal & class) -->
+  <section id="vitebsk-residents-widgets" class="vitebsk-widgets">
+    <h2>Витебск — Резиденты (две реализации)</h2>
+    <p>Добавьте запись о жителе и найдите пару фамилий, живущих в разных городах, но по одному адресу.</p>
+
+    <div class="vitebsk-grid">
+      <div class="vitebsk-block" id="vitebsk-proto">
+        <h3>1) Прототипная (functional / prototypal)</h3>
+        <form id="form-proto" class="vitebsk-form" onsubmit="event.preventDefault(); return false;" novalidate>
+          <input name="surname" placeholder="Фамилия" required />
+          <input name="city" placeholder="Город" required />
+          <input name="street" placeholder="Улица" required />
+          <input name="house" placeholder="Дом" required />
+          <input name="apt" placeholder="Кв." required />
+          <button id="add-proto" type="button">Добавить (proto)</button>
+          <button id="run-proto" type="button">Найти пару (proto)</button>
+        </form>
+        <div>
+          <h4>Список (proto)</h4>
+          <div id="list-proto"></div>
+        </div>
+        <div>
+          <h4>Результат (proto)</h4>
+          <div id="result-proto"></div>
+        </div>
+      </div>
+
+      <div class="vitebsk-block" id="vitebsk-class">
+        <h3>2) Классы (ES6 class / extends)</h3>
+        <form id="form-class" class="vitebsk-form" onsubmit="event.preventDefault(); return false;" novalidate>
+          <input name="surname" placeholder="Фамилия" required />
+          <input name="city" placeholder="Город" required />
+          <input name="street" placeholder="Улица" required />
+          <input name="house" placeholder="Дом" required />
+          <input name="apt" placeholder="Кв." required />
+          <button id="add-class" type="button">Добавить (class)</button>
+          <button id="run-class" type="button">Найти пару (class)</button>
+        </form>
+        <div>
+          <h4>Список (class)</h4>
+          <div id="list-class"></div>
+        </div>
+        <div>
+          <h4>Результат (class)</h4>
+          <div id="result-class"></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="vitebsk-note">Примеры данных загружены по умолчанию; вы можете добавлять новые записи через формы выше.</p>
+  </section>
+
+  <!-- load vitebsk residents script -->
+  <script src="{% static 'js/vitebsk_residents.js' %}"></script>
+
+  <!-- Dynamic radio generator: add without removing existing content -->
+  <div id="cart-customizer-root">
+    <div class="cd-controls">
+      <label><input type="checkbox" id="cart-customizer-enable"> Enable radio generator</label>
+      <button id="cart-customizer-add" class="btn btn-sm" type="button">Add radio</button>
+    </div>
+    <div class="cd-panel">
+      <div id="cart-customizer-list"></div>
+    </div>
+  </div>
+  <link rel="stylesheet" href="{% static 'css/cart_dynamic.css' %}" media="all">
+  <script src="{% static 'js/cart_dynamic.js' %}"></script>
+</section>
+{% endblock %}

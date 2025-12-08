@@ -1,0 +1,35 @@
+{# filepath: /Users/user/Desktop/igi/353505_Chuiko_26/IGI/LR5/Agency/estateAgency/templates/deals/client_list.html #}
+{% extends "base.html" %}
+{% block content %}
+  <h1>Мои сделки (Клиент)</h1>
+  {% if deals %}
+    <table>
+      <thead>
+        <tr>
+          <th>Объект</th>
+          <th>Агент</th>
+          <th>Статус</th>
+          <th>Комиссия</th>
+          <th>Дата</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for deal in deals %}
+          <tr>
+            <td>
+              <a href="{% url 'property_detail' deal.property.pk %}">
+                {{ deal.property.title }}
+              </a>
+            </td>
+            <td>{{ deal.agent.profile.get_full_name }}</td>
+            <td>{{ deal.get_status_display }}</td>
+            <td>{{ deal.commission }}</td>
+            <td>{{ deal.date|date:"d.m.Y" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>У вас пока нет сделок.</p>
+  {% endif %}
+{% endblock %}

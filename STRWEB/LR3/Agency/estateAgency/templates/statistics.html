@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Статистика агентства{% endblock %}
+
+{% block content %}
+{% if user.is_staff %}
+<div class="container mt-4">
+    <h1 class="mb-4">Статистика агентства недвижимости</h1>
+
+   <!--  <div class="mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Всего сделок</h5>
+                    <p class="card-text display-6">{{ total_deals }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Общая комиссия</h5>
+                    <p class="card-text display-6">{{ total_commission|floatformat:0 }}₽</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Средняя цена объекта</h5>
+                    <p class="card-text display-6">{{ avg_price|floatformat:0 }}₽</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Максимальная цена</h5>
+                    <p class="card-text display-6">{{ max_price|floatformat:0 }}₽</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Распределение объектов по типам</h5>
+                    <div style="max-width: 500px; max-height: 400px; margin: auto;">
+                        <img src="{{ property_types_chart }}" class="img-fluid" alt="График типов недвижимости" style="width: 100%; height: auto;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Топ агентов по комиссии</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Агент</th>
+                            <th>Количество сделок</th>
+                            <th>Общая комиссия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for agent in top_agents %}
+                        <tr>
+                            <td>{{ agent.first_name }} {{ agent.last_name }}</td>
+                            <td>{{ agent.deals_count }}</td>
+                            <td>{{ agent.total_commission|floatformat:0 }}₽</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Статистика клиентов</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <h6>Всего клиентов</h6>
+                    <p class="h3">{{ clients_stats.total }}</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Средний бюджет</h6>
+                    <p class="h3">{{ clients_stats.avg_budget|floatformat:0 }}₽</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Активные клиенты</h6>
+                    <p class="h3">{{ clients_stats.active_deals }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0">Топ 10 объектов по цене</h5>
+        </div>
+        <div class="card-body">
+            <div style="max-width: 800px; max-height: 400px; margin: auto;">
+                <img src="{{ price_distribution_chart }}" class="img-fluid" alt="График распределения цен" style="width: 100%; height: auto;">
+            </div>
+        </div>
+    </div> -->
+
+        <!-- Series approximation vs analytic function (Chart.js) -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Ряд и аналитическая функция: ln((x+1)/(x-1))</h5>
+            </div>
+            <div class="card-body">
+                <p>Ряд: ln((x + 1)/(x - 1)) = 2 * Σ[n=1..∞] 1/((2n+1) * x^(2n+1)), для |x| &gt; 1</p>
+                <div class="mb-3">
+                    <label>Диапазон x (start, end, step):</label>
+                    <input id="x-start" type="number" value="1.2" step="0.1" style="width:6rem"> 
+                    <input id="x-end" type="number" value="5" step="0.1" style="width:6rem"> 
+                    <input id="x-step" type="number" value="0.2" step="0.1" style="width:6rem">
+                </div>
+                <div class="mb-3">
+                    <label>Макс. членов ряда (n):</label>
+                    <input id="n-terms" type="number" value="20" min="1" style="width:6rem">
+                    <label style="margin-left:1rem">Порог eps (используется как остановка):</label>
+                    <input id="eps" type="number" value="1e-8" step="1e-8" style="width:8rem">
+                </div>
+                <div class="mb-3">
+                    <button id="plot-btn" class="btn btn-primary" type="button">Построить графики</button>
+                    <button id="save-btn" class="btn btn-secondary" type="button">Сохранить PNG</button>
+                </div>
+
+                <canvas id="series-chart" width="800" height="400"></canvas>
+
+                <h6 class="mt-3">Таблица значений</h6>
+                <div id="series-table"></div>
+            </div>
+        </div>
+
+        <!-- Chart.js and plugin -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+        <script src="{% static 'js/chart_series.js' %}"></script>
+{% else %}
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Доступ запрещён</h4>
+        <p>У вас нет прав для просмотра этой страницы. Необходимы права администратора.</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
