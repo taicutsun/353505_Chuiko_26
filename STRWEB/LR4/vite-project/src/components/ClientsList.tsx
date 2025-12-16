@@ -6,6 +6,7 @@ import {
   useDeleteClient,
 } from "../hooks/useClients";
 import type { Client } from "../api/clients";
+import "../styles/ClientsList.css";
 
 const ClientsList: React.FC = () => {
   const [search, setSearch] = useState("");
@@ -16,6 +17,12 @@ const ClientsList: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
   const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    address: "",
+  });
+  const [formErrors, setFormErrors] = useState({
     name: "",
     email: "",
     phone: "",
@@ -34,8 +41,45 @@ const ClientsList: React.FC = () => {
   const updateMutation = useUpdateClient();
   const deleteMutation = useDeleteClient();
 
+  const validateForm = () => {
+    const errors = {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    };
+
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+    }
+
+    if (!formData.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Invalid email format";
+    }
+
+    if (!formData.phone.trim()) {
+      errors.phone = "Phone is required";
+    } else if (!/^\+?[\d\s\-()]+$/.test(formData.phone)) {
+      errors.phone = "Invalid phone format";
+    }
+
+    if (!formData.address.trim()) {
+      errors.address = "Address is required";
+    }
+
+    setFormErrors(errors);
+    return !errors.name && !errors.email && !errors.phone && !errors.address;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
     try {
       if (editingClient) {
         await updateMutation.mutateAsync({
@@ -62,6 +106,7 @@ const ClientsList: React.FC = () => {
       phone: client.phone,
       address: client.address,
     });
+    setFormErrors({ name: "", email: "", phone: "", address: "" });
     setShowForm(true);
   };
 
@@ -80,45 +125,21 @@ const ClientsList: React.FC = () => {
     setShowForm(false);
     setEditingClient(null);
     setFormData({ name: "", email: "", phone: "", address: "" });
+    setFormErrors({ name: "", email: "", phone: "", address: "" });
   };
 
   const totalPages = data?.pagination?.pages || 1;
 
   return (
-    <div style={{ marginBottom: "40px" }}>
-      <div
-        style={{
-          marginBottom: "20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h2>Clients Management</h2>
-        <button
-          onClick={() => setShowForm(true)}
-          style={{
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            padding: "8px 16px",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
+    <div className="clients-container">
+      <div className="clients-header">
+        <h2 className="clients-title">Clients Management</h2>
+        <button className="btn-add-client" onClick={() => setShowForm(true)}>
           Add New Client
         </button>
       </div>
 
-      {/* Search and Filters */}
-      <div
-        style={{
-          marginBottom: "20px",
-          display: "flex",
-          gap: "10px",
-          flexWrap: "wrap",
-        }}
-      >
+      <div className="search-filter-section">
         <input
           type="text"
           placeholder="Search clients..."
@@ -127,12 +148,7 @@ const ClientsList: React.FC = () => {
             setSearch(e.target.value);
             setPage(1);
           }}
-          style={{
-            padding: "8px",
-            border: "1px solid #ddd",
-            borderRadius: "4px",
-            minWidth: "200px",
-          }}
+          className="search-input"
         />
 
         <select
@@ -141,11 +157,7 @@ const ClientsList: React.FC = () => {
             setSortBy(e.target.value);
             setPage(1);
           }}
-          style={{
-            padding: "8px",
-            border: "1px solid #ddd",
-            borderRadius: "4px",
-          }}
+          className="filter-select"
         >
           <option value="createdAt">Created Date</option>
           <option value="name">Name</option>
@@ -158,11 +170,7 @@ const ClientsList: React.FC = () => {
             setSortOrder(e.target.value as "asc" | "desc");
             setPage(1);
           }}
-          style={{
-            padding: "8px",
-            border: "1px solid #ddd",
-            borderRadius: "4px",
-          }}
+          className="filter-select"
         >
           <option value="desc">Descending</option>
           <option value="asc">Ascending</option>
@@ -171,35 +179,14 @@ const ClientsList: React.FC = () => {
 
       {/* Form Modal */}
       {showForm && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1000,
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "8px",
-              width: "90%",
-              maxWidth: "500px",
-            }}
-          >
-            <h3>{editingClient ? "Edit Client" : "Add New Client"}</h3>
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Name:
-                </label>
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3 className="modal-title">
+              {editingClient ? "Edit Client" : "Add New Client"}
+            </h3>
+            <form onSubmit={handleSubmit} className="client-form">
+              <div className="form-group">
+                <label className="form-label">Name:</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -207,18 +194,14 @@ const ClientsList: React.FC = () => {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   required
-                  style={{
-                    width: "100%",
-                    padding: "8px",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                  }}
+                  className={`form-input ${formErrors.name ? "error" : ""}`}
                 />
+                {formErrors.name && (
+                  <div className="error-message">{formErrors.name}</div>
+                )}
               </div>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Email:
-                </label>
+              <div className="form-group">
+                <label className="form-label">Email:</label>
                 <input
                   type="email"
                   value={formData.email}
@@ -226,18 +209,14 @@ const ClientsList: React.FC = () => {
                     setFormData({ ...formData, email: e.target.value })
                   }
                   required
-                  style={{
-                    width: "100%",
-                    padding: "8px",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                  }}
+                  className={`form-input ${formErrors.email ? "error" : ""}`}
                 />
+                {formErrors.email && (
+                  <div className="error-message">{formErrors.email}</div>
+                )}
               </div>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Phone:
-                </label>
+              <div className="form-group">
+                <label className="form-label">Phone:</label>
                 <input
                   type="tel"
                   value={formData.phone}
@@ -245,18 +224,14 @@ const ClientsList: React.FC = () => {
                     setFormData({ ...formData, phone: e.target.value })
                   }
                   required
-                  style={{
-                    width: "100%",
-                    padding: "8px",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                  }}
+                  className={`form-input ${formErrors.phone ? "error" : ""}`}
                 />
+                {formErrors.phone && (
+                  <div className="error-message">{formErrors.phone}</div>
+                )}
               </div>
-              <div style={{ marginBottom: "15px" }}>
-                <label style={{ display: "block", marginBottom: "5px" }}>
-                  Address:
-                </label>
+              <div className="form-group">
+                <label className="form-label">Address:</label>
                 <textarea
                   value={formData.address}
                   onChange={(e) =>
@@ -264,32 +239,19 @@ const ClientsList: React.FC = () => {
                   }
                   required
                   rows={3}
-                  style={{
-                    width: "100%",
-                    padding: "8px",
-                    border: "1px solid #ddd",
-                    borderRadius: "4px",
-                  }}
+                  className={`form-textarea ${
+                    formErrors.address ? "error" : ""
+                  }`}
                 />
+                {formErrors.address && (
+                  <div className="error-message">{formErrors.address}</div>
+                )}
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  justifyContent: "flex-end",
-                }}
-              >
+              <div className="form-actions">
                 <button
                   type="button"
                   onClick={handleCancel}
-                  style={{
-                    backgroundColor: "#6c757d",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
+                  className="btn-cancel"
                 >
                   Cancel
                 </button>
@@ -298,14 +260,7 @@ const ClientsList: React.FC = () => {
                   disabled={
                     createMutation.isPending || updateMutation.isPending
                   }
-                  style={{
-                    backgroundColor: "#007bff",
-                    color: "white",
-                    border: "none",
-                    padding: "8px 16px",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
+                  className="btn-submit"
                 >
                   {createMutation.isPending || updateMutation.isPending
                     ? "Saving..."
@@ -317,153 +272,44 @@ const ClientsList: React.FC = () => {
         </div>
       )}
 
-      {/* Data Table */}
-      {isLoading && <div>Loading clients...</div>}
-      {error && <div>Error loading clients</div>}
+      {isLoading && <div className="loading-message">Loading clients...</div>}
+      {error && (
+        <div className="error-message-container">Error loading clients</div>
+      )}
 
       {data && (
         <>
-          <div style={{ overflowX: "auto" }}>
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                border: "1px solid #ddd",
-              }}
-            >
+          <div className="clients-table-container">
+            <table className="clients-table">
               <thead>
-                <tr style={{ backgroundColor: "#f8f9fa" }}>
-                  <th
-                    style={{
-                      padding: "12px",
-                      textAlign: "left",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
-                    Name
-                  </th>
-                  <th
-                    style={{
-                      padding: "12px",
-                      textAlign: "left",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
-                    Email
-                  </th>
-                  <th
-                    style={{
-                      padding: "12px",
-                      textAlign: "left",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
-                    Phone
-                  </th>
-                  <th
-                    style={{
-                      padding: "12px",
-                      textAlign: "left",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
-                    Address
-                  </th>
-                  <th
-                    style={{
-                      padding: "12px",
-                      textAlign: "left",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
-                    Created
-                  </th>
-                  <th
-                    style={{
-                      padding: "12px",
-                      textAlign: "center",
-                      borderBottom: "1px solid #ddd",
-                    }}
-                  >
-                    Actions
-                  </th>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th>Created</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {(Array.isArray(data?.clients) ? data.clients : []).map(
                   (client: Client) => (
                     <tr key={client._id}>
-                      <td
-                        style={{
-                          padding: "12px",
-                          borderBottom: "1px solid #eee",
-                        }}
-                      >
-                        {client.name}
-                      </td>
-                      <td
-                        style={{
-                          padding: "12px",
-                          borderBottom: "1px solid #eee",
-                        }}
-                      >
-                        {client.email}
-                      </td>
-                      <td
-                        style={{
-                          padding: "12px",
-                          borderBottom: "1px solid #eee",
-                        }}
-                      >
-                        {client.phone}
-                      </td>
-                      <td
-                        style={{
-                          padding: "12px",
-                          borderBottom: "1px solid #eee",
-                        }}
-                      >
-                        {client.address}
-                      </td>
-                      <td
-                        style={{
-                          padding: "12px",
-                          borderBottom: "1px solid #eee",
-                        }}
-                      >
-                        {new Date(client.createdAt).toLocaleDateString()}
-                      </td>
-                      <td
-                        style={{
-                          padding: "12px",
-                          borderBottom: "1px solid #eee",
-                          textAlign: "center",
-                        }}
-                      >
+                      <td>{client.name}</td>
+                      <td>{client.email}</td>
+                      <td>{client.phone}</td>
+                      <td>{client.address}</td>
+                      <td>{new Date(client.createdAt).toLocaleDateString()}</td>
+                      <td className="action-buttons">
                         <button
                           onClick={() => handleEdit(client)}
-                          style={{
-                            backgroundColor: "#28a745",
-                            color: "white",
-                            border: "none",
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            marginRight: "5px",
-                          }}
-                        >
+                          className="btn-edit"
+                        >handleDelete
                           Edit
                         </button>
                         <button
-                          onClick={() => handleDelete(client._id)}
-                          style={{
-                            backgroundColor: "#dc3545",
-                            color: "white",
-                            border: "none",
-                            padding: "4px 8px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                          }}
+                          onClick={() => (client._id)}
+                          className="btn-delete"
                         >
                           Delete
                         </button>
@@ -475,45 +321,24 @@ const ClientsList: React.FC = () => {
             </table>
           </div>
 
-          {/* Pagination */}
           {data.pagination && (
-            <div
-              style={{
-                marginTop: "20px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "10px",
-              }}
-            >
+            <div className="pagination-container">
               <button
                 onClick={() => setPage(page - 1)}
                 disabled={page === 1}
-                style={{
-                  padding: "8px 12px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  cursor: page === 1 ? "not-allowed" : "pointer",
-                  backgroundColor: page === 1 ? "#f8f9fa" : "white",
-                }}
+                className="pagination-btn"
               >
                 Previous
               </button>
 
-              <span style={{ margin: "0 10px" }}>
+              <span className="pagination-info">
                 Page {page} of {totalPages} ({data.pagination.total} total)
               </span>
 
               <button
                 onClick={() => setPage(page + 1)}
                 disabled={page === totalPages}
-                style={{
-                  padding: "8px 12px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  cursor: page === totalPages ? "not-allowed" : "pointer",
-                  backgroundColor: page === totalPages ? "#f8f9fa" : "white",
-                }}
+                className="pagination-btn"
               >
                 Next
               </button>

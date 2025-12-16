@@ -1,5 +1,6 @@
 import express from "express";
 import { Employee } from "../models/Employee.js";
+import { authenticateToken, requireRole } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -68,50 +69,69 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST /api/employees - Create new employee
-router.post("/", async (req, res) => {
-  try {
-    const employee = new Employee(req.body);
-    const savedEmployee = await employee.save();
-    res.status(201).json(savedEmployee);
-  } catch (error: any) {
-    if (error.code === 11000) {
-      return res.status(400).json({ error: "Email already exists" });
+// POST /api/employees - Create new employee (admin only)
+router.post(
+  "/",
+  authenticateToken,
+  requireRole(["admin"]),
+  async (req, res) => {
+    try {
+      const employee = new Employee(req.body);
+      const savedEmployee = await employee.save();
+      res.status(201).json(savedEmployee);
+    } catch (error: any) {
+      if (error.code === 11000) {
+        return res.status(400).json({ error: "Email already exists" });
+      }
+      res.status(400).json({ error: "Failed to create employee" });
     }
-    res.status(400).json({ error: "Failed to create employee" });
   }
-});
+);
 
-// PUT /api/employees/:id - Update employee
-router.put("/:id", async (req, res) => {
-  try {
-    const employee = await Employee.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!employee) {
-      return res.status(404).json({ error: "Employee not found" });
+// PUT /api/employees/:id - Update employee (admin only)
+router.put(
+  "/:id",
+  authenticateToken,
+  requireRole(["admin"]),
+  async (req, res) => {
+    try {
+      const employee = await Employee.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+      if (!employee) {
+        return res.status(404).json({ error: "Employee not found" });
+      }
+      res.json(employee);
+    } catch (error: any) {
+      if (error.code === 11000) {
+        return res.status(400).json({ error: "Email already exists" });
+      }
+      res.status(400).json({ error: "Failed to update employee" });
     }
-    res.json(employee);
-  } catch (error: any) {
-    if (error.code === 11000) {
-      return res.status(400).json({ error: "Email already exists" });
-    }
-    res.status(400).json({ error: "Failed to update employee" });
   }
-});
+);
 
-// DELETE /api/employees/:id - Delete employee
-router.delete("/:id", async (req, res) => {
-  try {
-    const employee = await Employee.findByIdAndDelete(req.params.id);
-    if (!employee) {
-      return res.status(404).json({ error: "Employee not found" });
+// DELETE /api/employees/:id - Delete employee (admin only)
+router.delete(
+  "/:id",
+  authenticateToken,
+  requireRole(["admin"]),
+  async (req, res) => {
+    try {
+      const employee = await Employee.findByIdAndDelete(req.params.id);
+      if (!employee) {
+        return res.status(404).json({ error: "Employee not found" });
+      }
+      res.json({ message: "Employee deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete employee" });
     }
-    res.json({ message: "Employee deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete employee" });
   }
-});
+);
 
 export default router;

@@ -1,5 +1,6 @@
 import express from "express";
 import { News } from "../models/News.js";
+import { authenticateToken, requireRole } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -72,44 +73,59 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// POST /api/news - Create new news
-router.post("/", async (req, res) => {
-  try {
-    const news = new News(req.body);
-    const savedNews = await news.save();
-    res.status(201).json(savedNews);
-  } catch (error: any) {
-    res.status(400).json({ error: "Failed to create news" });
-  }
-});
-
-// PUT /api/news/:id - Update news
-router.put("/:id", async (req, res) => {
-  try {
-    const news = await News.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-    if (!news) {
-      return res.status(404).json({ error: "News not found" });
+// POST /api/news - Create new news (admin only)
+router.post(
+  "/",
+  authenticateToken,
+  requireRole(["admin"]),
+  async (req, res) => {
+    try {
+      const news = new News(req.body);
+      const savedNews = await news.save();
+      res.status(201).json(savedNews);
+    } catch (error: any) {
+      res.status(400).json({ error: "Failed to create news" });
     }
-    res.json(news);
-  } catch (error: any) {
-    res.status(400).json({ error: "Failed to update news" });
   }
-});
+);
 
-// DELETE /api/news/:id - Delete news
-router.delete("/:id", async (req, res) => {
-  try {
-    const news = await News.findByIdAndDelete(req.params.id);
-    if (!news) {
-      return res.status(404).json({ error: "News not found" });
+// PUT /api/news/:id - Update news (admin only)
+router.put(
+  "/:id",
+  authenticateToken,
+  requireRole(["admin"]),
+  async (req, res) => {
+    try {
+      const news = await News.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+      });
+      if (!news) {
+        return res.status(404).json({ error: "News not found" });
+      }
+      res.json(news);
+    } catch (error: any) {
+      res.status(400).json({ error: "Failed to update news" });
     }
-    res.json({ message: "News deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete news" });
   }
-});
+);
+
+// DELETE /api/news/:id - Delete news (admin only)
+router.delete(
+  "/:id",
+  authenticateToken,
+  requireRole(["admin"]),
+  async (req, res) => {
+    try {
+      const news = await News.findByIdAndDelete(req.params.id);
+      if (!news) {
+        return res.status(404).json({ error: "News not found" });
+      }
+      res.json({ message: "News deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete news" });
+    }
+  }
+);
 
 export default router;

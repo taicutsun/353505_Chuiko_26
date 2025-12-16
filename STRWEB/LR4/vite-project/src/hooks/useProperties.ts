@@ -3,6 +3,11 @@ import type { CreatePropertyRequest } from "../api/properties";
 import { propertiesApi } from "../api/properties";
 
 export const useProperties = (filters?: {
+  search?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  page?: number;
+  limit?: number;
   type?: string;
   status?: string;
   minPrice?: number;

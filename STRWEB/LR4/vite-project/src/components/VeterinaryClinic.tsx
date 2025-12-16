@@ -183,14 +183,8 @@ const VeterinaryClinic: React.FC = () => {
   );
 
   return (
-    <div
-      style={{
-        padding: "2rem",
-        backgroundColor: "#f9fafb",
-        minHeight: "100vh",
-      }}
-    >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="p-8 bg-gray-50 min-h-screen">
+      <div className="max-w-6xl mx-auto">
         <div className="veterinary-header">
           <h1 className="veterinary-title">Veterinary Clinic Management</h1>
           <p className="veterinary-subtitle">
@@ -261,25 +255,18 @@ const VeterinaryClinic: React.FC = () => {
           </div>
 
           <div>
-            <div style={{ position: "sticky", top: "2rem" }}>
+            <div className="sticky top-8">
               <div className="veterinary-card">
-                <h3 style={{ color: "#1f2937", marginBottom: "1rem" }}>
-                  Notifications
-                </h3>
-                <div
-                  className="veterinary-notifications"
-                  style={{ position: "static", maxWidth: "none" }}
-                >
+                <h3 className="text-gray-800 mb-4">Notifications</h3>
+                <div className="veterinary-notifications static max-w-none">
                   {notifications.length === 0 ? (
-                    <p style={{ color: "#6b7280", fontSize: "0.875rem" }}>
-                      No notifications
-                    </p>
+                    <p className="text-gray-500 text-sm">No notifications</p>
                   ) : (
                     notifications.map((notification, index) => (
                       <div
                         key={index}
-                        className="veterinary-notification veterinary-notification--info"
-                        style={{ position: "static", animation: "none" }}
+                        className="veterinary-notification veterinary-notification--info static"
+                        style={{ animation: "none" }}
                       >
                         {notification}
                       </div>
@@ -288,107 +275,50 @@ const VeterinaryClinic: React.FC = () => {
                 </div>
               </div>
 
-              <div
-                style={{
-                  backgroundColor: "white",
-                  padding: "1rem",
-                  borderRadius: "0.5rem",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                  marginBottom: "1rem",
-                }}
-              >
-                <h3
-                  style={{
-                    color: "#1f2937",
-                    marginBottom: "1rem",
-                    fontSize: "1.125rem",
-                  }}
-                >
-                  Quick Stats
-                </h3>
-                <div style={{ display: "grid", gap: "0.5rem" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      fontSize: "0.875rem",
-                    }}
-                  >
-                    <span style={{ color: "#6b7280" }}>Pet Profiles:</span>
-                    <span style={{ color: "#1f2937", fontWeight: "600" }}>
+              <div className="bg-white p-4 rounded-md shadow-sm mb-4">
+                <h3 className="text-gray-800 mb-4 text-lg">Quick Stats</h3>
+                <div className="grid gap-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Pet Profiles:</span>
+                    <span className="text-gray-800 font-semibold">
                       {petProfiles.length}
                     </span>
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      fontSize: "0.875rem",
-                    }}
-                  >
-                    <span style={{ color: "#6b7280" }}>Appointments:</span>
-                    <span style={{ color: "#1f2937", fontWeight: "600" }}>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Appointments:</span>
+                    <span className="text-gray-800 font-semibold">
                       {appointments.length}
                     </span>
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      fontSize: "0.875rem",
-                    }}
-                  >
-                    <span style={{ color: "#6b7280" }}>Prescriptions:</span>
-                    <span style={{ color: "#1f2937", fontWeight: "600" }}>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Prescriptions:</span>
+                    <span className="text-gray-800 font-semibold">
                       {prescriptions.length}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div
-                style={{
-                  backgroundColor: "white",
-                  padding: "1rem",
-                  borderRadius: "0.5rem",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-                }}
-              >
-                <h3
-                  style={{
-                    color: "#1f2937",
-                    marginBottom: "1rem",
-                    fontSize: "1.125rem",
-                  }}
-                >
+              <div className="bg-white p-4 rounded-md shadow-sm">
+                <h3 className="text-gray-800 mb-4 text-lg">
                   Recent Appointments
                 </h3>
                 {appointments.length === 0 ? (
-                  <p style={{ color: "#6b7280", fontSize: "0.875rem" }}>
-                    No appointments
-                  </p>
+                  <p className="text-gray-500 text-sm">No appointments</p>
                 ) : (
-                  <div style={{ display: "grid", gap: "0.5rem" }}>
+                  <div className="grid gap-2">
                     {appointments.slice(0, 3).map((appointment) => (
                       <div
                         key={appointment.id}
-                        style={{
-                          padding: "0.5rem",
-                          backgroundColor: "#f9fafb",
-                          border: "1px solid #e5e7eb",
-                          borderRadius: "0.25rem",
-                          fontSize: "0.75rem",
-                        }}
+                        className="p-2 bg-gray-50 border-gray-200 rounded-md"
                       >
-                        <div style={{ fontWeight: "600", color: "#1f2937" }}>
+                        <div className="font-semibold text-gray-800">
                           {appointment.petName}
                         </div>
-                        <div style={{ color: "#6b7280" }}>
+                        <div className="text-gray-500">
                           {appointment.date} - {appointment.time}
                         </div>
-                        <div style={{ color: "#6b7280" }}>
-                          {appointment.type}
-                        </div>
+                        <div className="text-gray-500">{appointment.type}</div>
                       </div>
                     ))}
                   </div>

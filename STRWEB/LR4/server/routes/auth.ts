@@ -1,20 +1,26 @@
 import express from "express";
-import { passport } from "../config/auth.js";
-import { User } from "../models/User.js";
 
 const router = express.Router();
 
-// Google OAuth routes
-router.get("/google", passport.authenticate("google"));
+// Simple auth endpoint - just check if token exists
+router.get("/me", (req, res) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-router.get(
-  "/google/callback",
-  passport.authenticate("google", { session: false }),
-  (req, res) => {
-    // Redirect to frontend without JWT token
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
-    res.redirect(`${frontendUrl}/auth/callback`);
+  if (token) {
+    res.json({
+      user: {
+        id: "user",
+        email: "user@example.com",
+        role: "user",
+        name: "User",
+        provider: "frontend",
+        isActive: true,
+      },
+    });
+  } else {
+    res.status(401).json({ error: "No token provided" });
   }
-);
+});
 
 export default router;
